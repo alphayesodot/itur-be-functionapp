@@ -1,0 +1,41 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "name": "HamanBlob",
+      "type": "blob",
+      "path": "%HAMAN_BLOB_NAME%/Haman-{DateTime}.xml",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    },
+    {
+      "name": "IturRamotBlob",
+      "type": "blob",
+      "path": "%ITUR_RAMOT_BLOB_NAME%/IturRamot-{DateTime}.xml",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    },
+    {
+      "name": "PsifasBlob",
+      "type": "blob",
+      "path": "%PSIFAS_BLOB_NAME%/Psifas-{DateTime}.xml",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    }
+  ],
+  "scriptFile": "../dist/xml-upload/index.js"
+}
