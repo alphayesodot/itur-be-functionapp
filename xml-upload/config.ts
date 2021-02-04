@@ -2,6 +2,10 @@ import * as functionConf from './function.json'
 import findObjInArrByKey from './utils/find'
 import * as env from 'env-var';
 
+export const error = {
+    serverErrorCode: env.get('SERVER_ERROR_CODE').required().asInt() || 500
+}
+
 export const blobsFilterConf = [
     {
         blobName: findObjInArrByKey(functionConf.bindings, 'name', 'Haman').name,
