@@ -16,7 +16,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             if (xmlData.includes(uniqueString)) {
                 context.bindings[blobName] = xmlData;
                 context.res = { status: 200, body: 'success' };
-                return context.done();
+                context.done();
             }
         }
 
@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             status: error.code,
             body: error.message
         }
-        return context.done();
+        return;
     }
 
 };

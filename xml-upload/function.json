@@ -6,7 +6,6 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
         "post"
       ]
     },
@@ -30,9 +29,9 @@
       "direction": "out"
     },
     {
-      "name": "PsifasBlob",
+      "name": "PsiphasBlob",
       "type": "blob",
-      "path": "%PSIFAS_BLOB_NAME%/Psifas-{DateTime}.xml",
+      "path": "%PSIPHAS_BLOB_NAME%/Psiphas-{DateTime}.xml",
       "connection": "AzureWebJobsStorage",
       "direction": "out"
     }

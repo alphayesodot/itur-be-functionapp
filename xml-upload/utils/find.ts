@@ -1,5 +1,5 @@
-const findObjInArrByKey = (arr: any[], key: string, value: string) => {  
+const findObjBySimilarKeyValue = (arr: any[], key: string, value: string) => {  
     return arr.find((obj: any) => obj[key].toLowerCase().includes(value.toLowerCase()));
 }
 
-export default findObjInArrByKey;
+export default findObjBySimilarKeyValue;
