@@ -3,7 +3,7 @@ import findObjInArrByKey from './utils/find'
 import * as env from 'env-var';
 
 export const error = {
-    serverErrorCode: env.get('SERVER_ERROR_CODE').required().asInt() || 500
+    serverErrorCode: env.get('SERVER_ERROR_CODE').asInt() || 500
 }
 
 export const blobsFilterConf = [

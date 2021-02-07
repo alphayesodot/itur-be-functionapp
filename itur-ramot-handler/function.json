@@ -10,8 +10,8 @@
     {
       "type": "queue",
       "direction": "out",
-      "name": "outqueue",
-      "queueName": "malshabjunk",
+      "name": "malshabqueue",
+      "queueName": "malshab-queue",
       "connection": "AzureWebJobsStorage"
     }
   ],

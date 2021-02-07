@@ -1,14 +1,18 @@
-import { AzureFunction, Context } from "@azure/functions";
+import { AzureFunction, Context } from '@azure/functions';
 import blobXMLToJSON from './utils/blobToJson';
-import ramotXmlKeySet from './config';
-const blobTrigger: AzureFunction = async function (context: Context, myBlob: any): Promise<void> {
-    
-    let usersArr: Array<Object> = blobXMLToJSON(myBlob)[ramotXmlKeySet[0]][ramotXmlKeySet[1]][ramotXmlKeySet[2]];
-    // const usersArr: Array<Object> = blobXMLToJSON(context.bindings.myBlob)['itu:ITURTORAMOTDATA'].PSIFAS_EVENTS.PSIFASRECORD;
-    // const usersArr: Array<Object> = blobXMLToJSON(context.bindings.myBlob)['itu:ITURTORAMOTDATA'].PSIFAS_EVENTS.PSIFASRECORD;
-    context.bindings.outqueue = usersArr;
-    context.done();
-    
+import * as config from './config/config';
+import { getNestedPropertiesFromArray, cleanObj } from '../shared/utils/index';
+import { Malshab } from '../shared/malshab/malshab.interface';
+import RamotUser from './config/ramotUser.interface';
+import { parseRamotToMalshab } from './config/config';
+
+const blobTrigger: AzureFunction = async function (context: Context, xmlBlob: any): Promise<void> {
+    const parsedXML: object[] = blobXMLToJSON(xmlBlob);
+
+    const ramotUsers: RamotUser[] = getNestedPropertiesFromArray(parsedXML, config.ramotXmlKeySet);
+    const malshabUsers: Malshab[] = ramotUsers.map((user: RamotUser) => cleanObj(parseRamotToMalshab(user)));
+
+    context.bindings.malshabqueue = malshabUsers;
 };
 
 export default blobTrigger;
