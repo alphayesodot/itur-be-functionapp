@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "malshabUpdateMessage",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "malshab-queue",
+      "connection": "radarstrg_STORAGE"
+    }
+  ],
+  "scriptFile": "../dist/UpdateMalshab/index.js"
+}
