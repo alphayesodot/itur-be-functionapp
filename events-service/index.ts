@@ -11,7 +11,7 @@ const queueTrigger: AzureFunction = async function (context: Context, myQueueIte
     if(error){
       throw new InvalidEventObject();
     }
-    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+    await mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(async () => {
       const nodesGroups = await nodeGroupModel.find({nodes: queueObj.nodeId}).exec()
       .catch((error)=>{ throw new NodeGroupNotFound(queueObj.nodeId)});
