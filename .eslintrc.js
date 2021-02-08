@@ -30,7 +30,6 @@ module.exports = {
             {
                 js: 'never',
                 ts: 'never',
-                json: 'never',
             },
         ],
         'no-unused-vars': 'off', // Checked by typescript

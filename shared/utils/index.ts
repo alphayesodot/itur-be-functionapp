@@ -1,4 +1,4 @@
-import { HTMLdecode } from './decode';
+import htmlDecode from './decode';
 
 export const getNestedPropertiesFromArray = (arr: object[], keySet: string[]) => {
     let nested: any = arr;
@@ -9,18 +9,17 @@ export const getNestedPropertiesFromArray = (arr: object[], keySet: string[]) =>
 };
 
 export const parseIntIfExists = (v: any) => {
-    return isNaN(parseInt(v)) ? undefined : parseInt(v);
+    return Number.isNaN(parseInt(v, 10)) ? undefined : parseInt(v, 10);
 };
 
 export const cleanObj = (obj: any) => {
-    let cleanedObj = obj;
-    for (let propName in cleanedObj) {
-        if (typeof cleanedObj[propName] == 'string') cleanedObj[propName] = HTMLdecode(cleanedObj[propName]);
-        if (cleanedObj[propName] === null || cleanedObj[propName] === undefined || cleanedObj[propName] === '') {
-            delete cleanedObj[propName];
-        };
-        if (Array.isArray(cleanedObj[propName])) cleanedObj[propName] = cleanArr(cleanedObj[propName]);
-    }
+    const cleanedObj = obj;
+    Object.keys(cleanedObj).forEach((key) => {
+        if (typeof cleanedObj[key] === 'string') cleanedObj[key] = htmlDecode(cleanedObj[key]);
+        if (cleanedObj[key] === null || cleanedObj[key] === undefined || cleanedObj[key] === '') delete cleanedObj[key];
+        // eslint-disable-next-line no-use-before-define
+        if (Array.isArray(cleanedObj[key])) cleanedObj[key] = cleanArr(cleanedObj[key]);
+    });
     return cleanedObj;
 };
 

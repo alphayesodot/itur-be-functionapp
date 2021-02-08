@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { AzureFunction, Context } from '@azure/functions';
 import blobXMLToJSON from './utils/blobToJson';
 import * as config from './config/config';
@@ -6,7 +7,7 @@ import { Malshab } from '../shared/malshab/malshab.interface';
 import RamotUser from './config/ramotUser.interface';
 import { parseRamotToMalshab } from './config/config';
 
-const blobTrigger: AzureFunction = async function (context: Context, xmlBlob: any): Promise<void> {
+const blobTrigger: AzureFunction = async (context: Context, xmlBlob: any): Promise<void> => {
     const parsedXML: object[] = blobXMLToJSON(xmlBlob);
 
     const ramotUsers: RamotUser[] = getNestedPropertiesFromArray(parsedXML, config.ramotXmlKeySet);

@@ -4,6 +4,10 @@ import RamotUser from './ramotUser.interface';
 
 export const ramotXmlKeySet = ['itu:ITURTORAMOTDATA', 'PSIFAS_EVENTS', 'PSIFASRECORD'];
 
+const parsePhoneNumber = (str: string | number): string => {
+    return str.toString().startsWith('0') ? str.toString() : `0${str}`;
+};
+
 export const parseRamotToMalshab = (ramotUser: RamotUser): Malshab => {
     return {
         identityNumber: ramotUser.ID_NUMBER.toString(),
@@ -107,8 +111,4 @@ export const parseRamotToMalshab = (ramotUser: RamotUser): Malshab => {
         shakimSchoolAverage: ramotUser.SHAKIM_SCHOOL_AVARAGE,
         isArabist: !!ramotUser.IS_ARABIST,
     };
-};
-
-const parsePhoneNumber = (str: string | number): string => {
-    return str.toString().startsWith('0') ? str.toString() : `0${str}`;
 };

@@ -1,3 +1,43 @@
+export type Gender = 1 | 2;
+export type MedicalProfile = 21 | 24 | 25 | 45 | 64 | 72 | 82 | 97;
+
+interface AptitudeTest {
+    svivatHadraha: number;
+    svivatSade: number;
+    svivatTipulBeadam: number;
+    svivatTechniAhzaka: number;
+    svivatTechniHafala: number;
+    svivatMinhalVerigun: number;
+    svivatIbudMeida: number;
+    madadKeshevMitmasheh: number;
+    madadKeshevSelektivi: number;
+    madadPikud: number;
+    madadAvodatTsevet: number;
+    madadHashkaVehatmada: number;
+    madadBashlutVebagrut: number;
+    madadHitnahagutMisgartit: number;
+}
+
+export interface Address {
+    street: string;
+    houseNumber: number;
+    cityId: number;
+    cityName: string;
+}
+
+interface Language {
+    languageId: number;
+    languageName: string;
+    languageLevel: number;
+    languageLevelDesc: string;
+}
+
+interface Grade {
+    examId: number;
+    examName: string;
+    grade: number;
+}
+
 export interface Malshab {
     identityNumber: string;
     personalNumber?: string;
@@ -41,43 +81,3 @@ export interface Malshab {
     interviews?: Array<any>;
     grades?: Grade[];
 }
-
-interface AptitudeTest {
-    svivatHadraha: number;
-    svivatSade: number;
-    svivatTipulBeadam: number;
-    svivatTechniAhzaka: number;
-    svivatTechniHafala: number;
-    svivatMinhalVerigun: number;
-    svivatIbudMeida: number;
-    madadKeshevMitmasheh: number;
-    madadKeshevSelektivi: number;
-    madadPikud: number;
-    madadAvodatTsevet: number;
-    madadHashkaVehatmada: number;
-    madadBashlutVebagrut: number;
-    madadHitnahagutMisgartit: number;
-}
-
-export interface Address {
-    street: string;
-    houseNumber: number;
-    cityId: number;
-    cityName: string;
-}
-
-interface Language {
-    languageId: number;
-    languageName: string;
-    languageLevel: number;
-    languageLevelDesc: string;
-}
-
-interface Grade {
-    examId: number;
-    examName: string;
-    grade: number;
-}
-
-export type Gender = 1 | 2;
-export type MedicalProfile = 21 | 24 | 25 | 45 | 64 | 72 | 82 | 97;

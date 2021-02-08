@@ -11,12 +11,12 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
+    "@azure/functions": "^1.0.2-beta2",
     "env-var": "^7.0.0",
     "fast-xml-parser": "^3.17.6",
     "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "@azure/functions": "^1.0.2-beta2",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
@@ -24,6 +24,7 @@
     "eslint": "^7.19.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
