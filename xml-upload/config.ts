@@ -1,5 +1,6 @@
 import * as env from 'env-var';
-import findObjInArrByKey from './utils/find';
+
+import findObjBySimilarKeyValue from './utils/find'
 import * as functionConf from './function.json';
 
 export const error = {
@@ -8,15 +9,15 @@ export const error = {
 
 export const blobsFilterConf = [
     {
-        blobName: findObjInArrByKey(functionConf.bindings, 'name', 'Haman').name,
+        blobName: findObjBySimilarKeyValue(functionConf.bindings, 'name', 'Haman').name,
         uniqueString: env.get('HAMAN_XML_UNIQUE_STRING').required().asString(),
     },
     {
-        blobName: findObjInArrByKey(functionConf.bindings, 'name', 'IturRamot').name,
+        blobName: findObjBySimilarKeyValue(functionConf.bindings, 'name', 'IturRamot').name,
         uniqueString: env.get('ITUR_RAMOT_XML_UNIQUE_STRING').required().asString(),
     },
     {
-        blobName: findObjInArrByKey(functionConf.bindings, 'name', 'Psifas').name,
-        uniqueString: env.get('PSIFAS_XML_UNIQUE_STRING').required().asString(),
+        blobName: findObjBySimilarKeyValue(functionConf.bindings, 'name', 'Psiphas').name,
+        uniqueString: env.get('PSIPHAS_XML_UNIQUE_STRING').required().asString(),
     },
 ];
