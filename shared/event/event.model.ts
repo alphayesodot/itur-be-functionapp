@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { IEvent } from './interface';
+import { IEvent } from './event.interface';
 
 const EventSchema = new mongoose.Schema({
     nodeId: mongoose.Types.ObjectId,

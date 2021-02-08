@@ -1,4 +1,4 @@
-export class FunctionError extends Error {
+class FunctionError extends Error {
     public code;
 
     constructor(code: number, message: string) {
@@ -6,3 +6,5 @@ export class FunctionError extends Error {
         this.code = code;
     }
 }
+
+export default FunctionError;
