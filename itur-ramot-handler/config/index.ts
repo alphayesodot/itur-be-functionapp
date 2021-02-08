@@ -1,12 +1,11 @@
-import { Address, Malshab } from '../../shared/malshab/malshab.interface';
-import { parseIntIfExists } from '../../shared/utils';
+import Malshab, { Address } from '../../shared/malshab/malshab.interface';
+import Event from '../../shared/event/event.interface';
 import RamotUser from './ramotUser.interface';
 
-export const ramotXmlKeySet = ['itu:ITURTORAMOTDATA', 'PSIFAS_EVENTS', 'PSIFASRECORD'];
+import { parseIntIfExists } from '../../shared/utils';
+import { parsePhoneNumber } from '../utils/index';
 
-const parsePhoneNumber = (str: string | number): string => {
-    return str.toString().startsWith('0') ? str.toString() : `0${str}`;
-};
+export const ramotXmlKeySet = ['itu:ITURTORAMOTDATA', 'PSIFAS_EVENTS', 'PSIFASRECORD'];
 
 export const parseRamotToMalshab = (ramotUser: RamotUser): Malshab => {
     return {
@@ -110,5 +109,13 @@ export const parseRamotToMalshab = (ramotUser: RamotUser): Malshab => {
         isReligiousSchool: !!ramotUser.IS_RELIGIOS_SCHOOL,
         shakimSchoolAverage: ramotUser.SHAKIM_SCHOOL_AVARAGE,
         isArabist: !!ramotUser.IS_ARABIST,
+    };
+};
+
+export const parseRamotToEvent = (ramotUser: RamotUser): Event => {
+    return {
+        nodeId: ramotUser.NODE_NAME_ID.toString(),
+        malshabId: ramotUser.ID_NUMBER.toString(),
+        time: new Date(ramotUser.EVENT_DATE),
     };
 };

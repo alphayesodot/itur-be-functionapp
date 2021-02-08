@@ -1,7 +1,7 @@
 {
   "bindings": [
     {
-      "name": "myBlob",
+      "name": "xmlBlob",
       "type": "blobTrigger",
       "direction": "in",
       "path": "itur-ramot/{name}.xml",
@@ -12,6 +12,13 @@
       "direction": "out",
       "name": "malshabqueue",
       "queueName": "malshab-queue",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "eventsqueue",
+      "queueName": "events-queue",
       "connection": "AzureWebJobsStorage"
     }
   ],

@@ -38,7 +38,7 @@ interface Grade {
     grade: number;
 }
 
-export interface Malshab {
+export default interface Malshab {
     identityNumber: string;
     personalNumber?: string;
     firstName?: string;
