@@ -1,7 +1,7 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from 'mongoose';
 
 export default interface INodeGroup {
-    owners: [ObjectId],
-    interviewers: [ObjectId],
-    nodes: [string]
- }
+    owners: [ObjectId];
+    interviewers: [ObjectId];
+    nodes: [string];
+}

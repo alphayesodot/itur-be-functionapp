@@ -8,7 +8,8 @@
     "prestart": "npm run build",
     "start": "func start",
     "test": "tsc && jest",
-    "lint": "eslint -c .eslintrc.json --no-error-on-unmatched-pattern ./src/**/*"
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "dependencies": {
     "joi": "^17.3.0",
@@ -17,14 +18,15 @@
   "devDependencies": {
     "@azure/functions": "^1.0.2-beta2",
     "@types/jest": "^26.0.20",
-    "eslint": "^6.8.0",
-    "@typescript-eslint/eslint-plugin": "2.31.0",
-    "@typescript-eslint/parser": "2.31.0",
-    "eslint-config-airbnb-typescript": "^7.0.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-prettier": "^3.1.2",
+    "@typescript-eslint/eslint-plugin": "^4.14.2",
+    "@typescript-eslint/parser": "^4.14.2",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "jest": "^26.6.3",
+    "prettier": "^2.2.1",
     "ts-jest": "^26.2.0",
     "typescript": "^4.1.3"
   }

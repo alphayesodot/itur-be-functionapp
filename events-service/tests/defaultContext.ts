@@ -1,3 +1,5 @@
-export const defaultContext = {
-    log: jest.fn()
-}
+const defaultContext = {
+    log: jest.fn(),
+};
+
+export default defaultContext;
