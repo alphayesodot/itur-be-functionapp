@@ -3,7 +3,7 @@ export  class ApplicationError extends Error {
 
     constructor(code: number, message: string, ) {
         super();
-        this.code = code || 400;
+        this.code = code;
         this.message = message || 'Unknown error';
     }
 }
@@ -17,24 +17,24 @@ export class InvalidEventObject extends ApplicationError {
 
   export class NodeGroupNotFound extends ApplicationError {
     constructor(nodeGroupId: string) {
-      super(400, `There is no Node Group with ${nodeGroupId} id`);
+      super(404, `There is no Node Group with ${nodeGroupId} id`);
     }
   }
   
   export class InterviewersNotFoud extends ApplicationError {
     constructor() {
-      super(400, 'There is no interviewers');
+      super(404, 'There is no interviewers');
     }
   }
 
   export class CreateEventFailed extends ApplicationError {
     constructor(eventObject) {
-      super(400, `Failed to create eventObject: ${eventObject}`);
+      super(500, `Failed to create eventObject: ${eventObject}`);
     }
   }
 
   export class MongooseConnectionFailed extends ApplicationError {
     constructor() {
-      super(400, 'Mongoose connection failed');
+      super(500, 'Mongoose connection failed');
     }
 }
