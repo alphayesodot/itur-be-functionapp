@@ -1,10 +1,10 @@
 {
   "bindings": [
     {
+      "name": "getUnits",
       "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
-      "name": "req",
       "methods": ["get"],
       "route": "units/"
     },
@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/getUnits/index.js"
+  "scriptFile": "../dist/GetUnits/index.js"
 }

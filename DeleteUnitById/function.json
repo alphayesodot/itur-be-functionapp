@@ -1,11 +1,11 @@
 {
   "bindings": [
     {
-      "name": "getUnitById",
+      "name": "deleteUnitById",
       "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
-      "methods": ["get"],
+      "methods": ["delete"],
       "route": "units/{id}"
     },
     {
@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/GetUnitById/index.js"
+  "scriptFile": "../dist/DeleteUnitById/index.js"
 }

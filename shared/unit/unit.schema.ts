@@ -1,7 +1,12 @@
 import * as Joi from 'joi';
 
-// eslint-disable-next-line import/prefer-default-export
-export const getUnitSchema = Joi.object({
+export const getUnitByIdSchema = Joi.object({
+    params: {
+        id: Joi.string().regex(/^[a-f\d]{24}$/i),
+    },
+}).unknown();
+
+export const deleteUnitByIdSchema = Joi.object({
     params: {
         id: Joi.string().regex(/^[a-f\d]{24}$/i),
     },
