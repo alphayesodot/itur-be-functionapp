@@ -3,8 +3,8 @@ import * as mongoose from 'mongoose';
 import { IEvent } from './event.interface';
 
 const EventSchema = new mongoose.Schema({
-    nodeId: mongoose.Types.ObjectId,
-    malshabId: mongoose.Types.ObjectId,
+    nodeId: String,
+    malshabId: String,
     time: Date,
     location: String,
     interviewersIds: [mongoose.Types.ObjectId],

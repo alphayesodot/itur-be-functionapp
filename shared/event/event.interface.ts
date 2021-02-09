@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
 
 export interface IEvent {
-    nodeId: mongoose.Types.ObjectId;
-    malshabId: mongoose.Types.ObjectId;
+    nodeId: string;
+    malshabId: string;
     time: Date;
     location: string;
     interviewersIds: mongoose.Types.ObjectId[];
     status: string;
-    url: string;
+    url?: string;
 }

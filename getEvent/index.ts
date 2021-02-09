@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/services/db';
-import getEventSchema from '../shared/event/event.schema';
+import { getEventSchema } from '../shared/event/event.schema';
 import FunctionError from '../shared/services/error';
 import EventModel from '../shared/event/event.model';
 
@@ -14,7 +14,6 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
 
         const { error } = getEventSchema.validate(req);
         if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
-
         const eventId = context.bindingData.id;
         const event = await EventModel.findById(eventId).exec();
         if (!event) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), `Not found Event with id: ${eventId}`);
