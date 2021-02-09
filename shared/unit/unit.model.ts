@@ -3,7 +3,10 @@ import * as mongoose from 'mongoose';
 import { IUnit } from './unit.interface';
 
 const UnitSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        unique: true,
+    },
     owners: [mongoose.Types.ObjectId],
     interviewers: [mongoose.Types.ObjectId],
     nodes: [String],

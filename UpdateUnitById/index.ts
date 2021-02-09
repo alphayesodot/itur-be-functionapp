@@ -16,7 +16,11 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
         if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
 
         const unitId = context.bindingData.id;
-        const unit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body }, { upsert: true }).exec();
+        const unit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body }, { upsert: true })
+            .exec()
+            .catch(() => {
+                throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), "Unit's name is already exist");
+            });
         if (!unit) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), `Not found Unit with id: ${unitId}`);
 
         const updatedUnit = await UnitModel.find({ _id: unitId }).exec();

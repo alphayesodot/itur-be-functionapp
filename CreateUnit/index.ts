@@ -15,7 +15,9 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
         const { error } = createUnitSchema.validate(req);
         if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
 
-        const unit = await UnitModel.create(req.body);
+        const unit = await UnitModel.create(req.body).catch(() => {
+            throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), "Unit's name is already exist");
+        });
         context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
     } catch (err) {
         context.res = getResObject(err.code, err.message);
