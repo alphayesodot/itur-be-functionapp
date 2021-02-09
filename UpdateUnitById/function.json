@@ -1,0 +1,18 @@
+{
+  "bindings": [
+    {
+      "name": "updateUnitById",
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": ["put"],
+      "route": "units/{id}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
+  "scriptFile": "../dist/UpdateUnitById/index.js"
+}

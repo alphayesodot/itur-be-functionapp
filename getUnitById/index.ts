@@ -18,6 +18,7 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
         const unitId = context.bindingData.id;
         const unit = await UnitModel.findById(unitId).exec();
         if (!unit) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), `Not found Unit with id: ${unitId}`);
+
         context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
     } catch (err) {
         context.res = getResObject(err.code, err.message);

@@ -17,8 +17,20 @@ export const deleteUnitByIdSchema = Joi.object({
 export const createUnitSchema = Joi.object({
     body: {
         name: Joi.string().required(),
-        owners: Joi.array().items(objectIdType).required(),
-        interviewers: Joi.array().items(objectIdType).required(),
         nodes: Joi.array().items(Joi.string()).required(),
+        owners: Joi.array().items(objectIdType).required(),
+        interviewers: Joi.array().items(objectIdType),
+    },
+}).unknown();
+
+export const updateUnitSchema = Joi.object({
+    params: {
+        id: objectIdType,
+    },
+    body: {
+        name: Joi.string(),
+        nodes: Joi.array().items(Joi.string()),
+        owners: Joi.array().items(objectIdType),
+        interviewers: Joi.array().items(objectIdType),
     },
 }).unknown();

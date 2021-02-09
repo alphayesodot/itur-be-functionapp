@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/services/db';
 import FunctionError from '../shared/services/error';
-import { deleteUnitByIdSchema } from '../shared/unit/unit.schema';
+import { updateUnitSchema } from '../shared/unit/unit.schema';
 import UnitModel from '../shared/unit/unit.model';
 
 const getResObject = (statusCode, errorMessage) => {
@@ -12,14 +12,15 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
     try {
         await getConnection();
 
-        const { error } = deleteUnitByIdSchema.validate(req);
+        const { error } = updateUnitSchema.validate(req);
         if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
 
         const unitId = context.bindingData.id;
-        const unit = await UnitModel.findByIdAndRemove(unitId).exec();
+        const unit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body }, { upsert: true }).exec();
         if (!unit) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), `Not found Unit with id: ${unitId}`);
 
-        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
+        const updatedUnit = await UnitModel.find({ _id: unitId }).exec();
+        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), updatedUnit);
     } catch (err) {
         context.res = getResObject(err.code, err.message);
     }
