@@ -2,8 +2,8 @@ import { AzureFunction, Context } from '@azure/functions';
 import UnitModel from '../shared/unit/unit.model';
 import getConnection from '../shared/services/db';
 
-const getResObject = (statusCode, errorMessage) => {
-    return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body: errorMessage };
+const getResObject = (statusCode: number, body: object | string) => {
+    return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body };
 };
 
 const httpTrigger: AzureFunction = async (context: Context): Promise<void> => {
