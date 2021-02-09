@@ -14,5 +14,5 @@ const EventsSchema = new mongoose.Schema({
     },
 });
 
-const EventModel = mongoose.model<IEvent & mongoose.Document>(process.env.EVENT_COLLECTION_NAME || 'event', EventsSchema);
+const EventModel = mongoose.model<IEvent & mongoose.Document>(process.env.EVENT_COLLECTION_NAME , EventsSchema);
 export default EventModel;

@@ -1,7 +1,7 @@
 import { AzureFunction, Context } from '@azure/functions';
 import * as mongoose from 'mongoose';
 import EventModel from './event.model';
-import nodeGroupModel from './nodeGroup.model';
+import nodesGroupModel from './nodesGroup.model';
 import ApplicationError from './utils/error';
 import validEvent from './utils/validate';
 
@@ -14,7 +14,7 @@ const queueTrigger: AzureFunction = async (context: Context, myQueueItem: string
     await mongoose
         .connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         .then(async () => {
-            const nodesGroups = await nodeGroupModel
+            const nodesGroups = await nodesGroupModel
                 .find({ nodes: queueObj.nodeId })
                 .exec()
                 .catch((err) => {
