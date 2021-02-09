@@ -1,4 +1,4 @@
- class FunctionError extends Error {
+class FunctionError extends Error {
     public code;
 
     constructor(code: number, message: string) {

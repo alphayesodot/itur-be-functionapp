@@ -8,6 +8,6 @@ const nodesGroupSchema = new mongoose.Schema({
     nodes: [String],
 });
 
-const nodesGroupModel = mongoose.model<INodesGroup & mongoose.Document>(process.env.NODE_GROUP_COLLECTION_NAME , nodesGroupSchema);
+const nodesGroupModel = mongoose.model<INodesGroup & mongoose.Document>(process.env.NODES_GROUP_COLLECTION_NAME, nodesGroupSchema);
 
 export default nodesGroupModel;
