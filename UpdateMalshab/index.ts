@@ -2,23 +2,24 @@ import { AzureFunction, Context } from "@azure/functions";
 import { MongoClient } from 'mongodb';
 import { Malshab } from '../shared/malshab/malshab.interface';
 
-const mongoUrl = `mongodb:// ${process.env.COSMOSDB_HOST}:${process.env.COSMOSDB_PORT}/${process.env.COSMOSDB_DBNAME}?ssl=true&replicaSet=globaldb`;
+const mongoUrl = `mongodb://${process.env.COSMOSDB_USER}:${process.env.COSMOSDB_PASSWORD}@${process.env.COSMOSDB_HOST}:${process.env.COSMOSDB_PORT}/${process.env.COSMOSDB_DBNAME}?ssl=true&replicaSet=globaldb`;
 // Create a single static mongo client that every function invocation can use.
-const mongo = new MongoClient(mongoUrl);
+// TODO: make this static mongo client accesible to all of the function app.
+const mongo = new MongoClient(mongoUrl, { useUnifiedTopology: true });
+mongo.connect();
 
-const updateMalshab: AzureFunction = async function (context: Context, malshabUpdateMessage: string): Promise<void> {
+const updateMalshab: AzureFunction = async function (context: Context, malshabUpdateMessage: any): Promise<void> {
     try {
-        await mongo.connect();
-
-        // parse queue message
         context.log('Queue trigger function processed work item', malshabUpdateMessage);
-        const malshab = JSON.parse(malshabUpdateMessage) as Partial<Malshab>;
+        if(typeof(malshabUpdateMessage) === 'string' ) {
+            throw new Error('The malshabUpdate message arrived as string instead of a JSON object, the object is probably invalid.');
+        }
+        const malshab = malshabUpdateMessage as Partial<Malshab>;
 
         if(!malshab.identityNumber) {
             throw new Error('The malshab object must have an "identityNumber" field.');
         }
 
-        // connect to mongo
         const db = mongo.db('radar');
         const collection = db.collection('malshab');
 
@@ -31,7 +32,7 @@ const updateMalshab: AzureFunction = async function (context: Context, malshabUp
             {
                 $set: malshabWitoutGrades,
                 $addToSet: { 
-                    'grades': { $each: malshab.grades },
+                    'grades': { $each: malshab.grades || [] },
                 },
             },
             {
@@ -41,7 +42,7 @@ const updateMalshab: AzureFunction = async function (context: Context, malshabUp
 
     } catch (err) {
         context.log.error(err + context.invocationId);
-        // currently all errors will result in a retry
+        // currently all errors will result in a retry, after 5 retries the message is transfered to a poison-queue.
         throw new Error(`Error in ${context.executionContext.functionName} function: ${JSON.stringify(err)}`);
     }
 };
