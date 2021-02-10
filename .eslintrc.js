@@ -33,6 +33,7 @@ module.exports = {
                 json: 'never',
             },
         ],
+        'func-names': 0,
         'import/no-unresolved': 0,
         'no-unused-vars': 'off', // Checked by typescript
     },
