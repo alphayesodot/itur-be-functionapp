@@ -6,15 +6,14 @@ import nodesGroupModel from '../shared/models/nodesGroup.model';
 import FunctionError from '../shared/utils/error';
 import INodesGroup from '../shared/interfaces/nodesGroup.interface';
 import reqValidation from './utils/req.validation';
-import notFoundObj from '../shared/utils/errorObj';
+import {groupNotFoundObj} from '../shared/utils/errorObjects';
 
-const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
-    const { userId } = req.params;
-
-    // const { error } = reqValidation.validate(userId);
-    // if (error) {
-    //     throw new FunctionError(400, 'Invalid id');
-    // }
+const getUserNodesGroups: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
+    const { userId } = context.bindingData;
+    const { error } = reqValidation.validate(req);
+    if (error) {
+        throw new FunctionError(400, 'Invalid id');
+    }
     await getConnection()
         .then(async () => {
             const userNodesGroups: INodesGroup[] = await nodesGroupModel
@@ -24,7 +23,7 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
                     throw new FunctionError(404, 'No nodes groups');
                 });
 
-            userNodesGroups.length > 0 ? (context.res = { status: process.env.SUCCESS_CODE, body: userNodesGroups }) : (context.res = notFoundObj);
+            userNodesGroups.length > 0 ? (context.res = { status: process.env.SUCCESS_CODE, body: userNodesGroups }) : (context.res = groupNotFoundObj);
         })
         .catch((err) => {
             context.res = {
@@ -34,4 +33,4 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
         });
 };
 
-export default httpTrigger;
+export default getUserNodesGroups;
