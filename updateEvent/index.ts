@@ -1,9 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { startOfDay, endOfDay } from 'date-fns';
 import getConnection from '../shared/services/db';
-import { getEventsSchema } from '../shared/event/event.schema';
+import { updateEventSchema } from '../shared/event/event.schema';
 import FunctionError from '../shared/services/error';
 import EventModel from '../shared/event/event.model';
+import { IEvent } from '../shared/event/event.interface';
 
 const getResObject = (statusCode: Number | undefined, errorMessage: any) => {
     return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body: errorMessage };
@@ -13,19 +13,16 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
     try {
         await getConnection();
 
-        const { error } = getEventsSchema.validate(req);
+        const { error } = updateEventSchema.validate(req);
         if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
 
-        const { interviewerId, date } = req.body;
-        const events = await EventModel.find({
-            time: {
-                $gte: startOfDay(new Date(date)),
-                $lte: endOfDay(new Date(date)),
-            },
-            // check that interviewersIds contain interviewerId
-            interviewersIds: interviewerId,
-        }).exec();
-        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), events);
+        const { eventId, url, interviewersId, time } = req.body;
+        const event: Partial<IEvent> = {
+            ...req.body,
+        };
+
+        const updatedEvent = await EventModel.updateOne(eventId, event).exec();
+        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), event);
     } catch (err) {
         context.res = getResObject(err.code, err.message);
     }

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { IEvent } from './event.interface';
+import { IEvent, Status } from './event.interface';
 
 const EventSchema = new mongoose.Schema({
     nodeId: String,
@@ -8,7 +8,7 @@ const EventSchema = new mongoose.Schema({
     time: Date,
     location: String,
     interviewersIds: [mongoose.Types.ObjectId],
-    status: String,
+    status: Status,
     url: String,
 });
 

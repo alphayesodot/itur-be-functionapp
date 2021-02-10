@@ -14,3 +14,12 @@ export const getEventsSchema = Joi.object({
         interviewerId: objectId.required(),
     },
 }).unknown();
+
+export const updateEventSchema = Joi.object({
+    body: {
+        time: Joi.date(),
+        interviewersId: Joi.array().items(objectId),
+        url: Joi.string(),
+        eventId: objectId.required(),
+    },
+});
