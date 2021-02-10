@@ -16,10 +16,12 @@ export const getEventsSchema = Joi.object({
 }).unknown();
 
 export const updateEventSchema = Joi.object({
+    params: {
+        id: objectId.required(),
+    },
     body: {
         time: Joi.date(),
         interviewersId: Joi.array().items(objectId),
         url: Joi.string(),
-        eventId: objectId.required(),
     },
-});
+}).unknown();

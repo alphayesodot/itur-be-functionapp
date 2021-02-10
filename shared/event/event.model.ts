@@ -8,7 +8,10 @@ const EventSchema = new mongoose.Schema({
     time: Date,
     location: String,
     interviewersIds: [mongoose.Types.ObjectId],
-    status: Status,
+    status: {
+        type: String,
+        enum: Status,
+    },
     url: String,
 });
 

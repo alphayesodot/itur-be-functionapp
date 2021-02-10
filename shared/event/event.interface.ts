@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose';
 
 export enum Status {
-    status1 = 'status1',
-    status2 = 'status2',
+    Status1 = 'AcceptedValue1',
+    Status2 = 'AcceptedValue2',
 }
 export interface IEvent {
     nodeId: string;
