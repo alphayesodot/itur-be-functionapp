@@ -7,5 +7,6 @@
     "sourceMap": true,
     "strict": false,
     "resolveJsonModule": true
-  }
+  },
+  "typeRoots": ["./node_modules/@types"]
 }

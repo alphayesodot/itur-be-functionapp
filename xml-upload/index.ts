@@ -1,15 +1,14 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import { validate } from 'fast-xml-parser'
-import HttpFunctionAppError from './utils/error'
-import * as config from './config'
+// eslint-disable-next-line import/no-unresolved
+import { AzureFunction, Context, HttpRequest } from '@azure/functions';
+import { validate } from 'fast-xml-parser';
+import HttpFunctionAppError from './utils/error';
+import * as config from './config';
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-
+const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
-
         if (!req.body) throw new HttpFunctionAppError(400, 'Missing request body');
         if (validate(req.body) !== true) throw new HttpFunctionAppError(400, 'XML structure incorrect');
-        
+
         const xmlData: string = req.body;
 
         const blobUploadByFileType = (blobName: string, uniqueString: string) => {
@@ -18,20 +17,19 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 context.res = { status: 200, body: 'success' };
                 context.done();
             }
-        }
+            return false;
+        };
 
-        config.blobsFilterConf.forEach(blobFilter => blobUploadByFileType(blobFilter.blobName, blobFilter.uniqueString));
+        config.blobsFilterConf.forEach((blobFilter) => blobUploadByFileType(blobFilter.blobName, blobFilter.uniqueString));
 
         throw new HttpFunctionAppError(400, 'Unknown XML structure');
-
     } catch (error) {
         context.res = {
-            status: error.code,
-            body: error.message
-        }
+            status: error.code || config.error.serverErrorCode,
+            body: error.message,
+        };
         return;
     }
-
 };
 
 export default httpTrigger;

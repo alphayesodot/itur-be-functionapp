@@ -1,0 +1,26 @@
+{
+  "bindings": [
+    {
+      "name": "xmlBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "itur-ramot/{name}.xml",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "malshabqueue",
+      "queueName": "malshab-queue",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "eventsqueue",
+      "queueName": "events-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ],
+  "scriptFile": "../dist/itur-ramot-handler/index.js"
+}
