@@ -1,22 +1,20 @@
-// import FunctionError from "../../shared/utils/error";
-
 import FunctionError from '../../shared/utils/error';
 
-const isEquals = (newNodesGroupProperties, unit, newNodesGroup) => {
+const validateAndUpdate = (newNodesGroupProperties, unit, newNodesGroup) => {
     if (newNodesGroupProperties.owners) {
-        if (newNodesGroupProperties.owners !== unit.owners) {
+        if (!newNodesGroupProperties.owners.every((owner) => unit.owners.includes(owner))) {
             throw new FunctionError(400, 'Nodes group and unit owners are different');
         }
         newNodesGroup.owners = newNodesGroupProperties.owners;
     }
     if (newNodesGroupProperties.interviewers) {
-        if (newNodesGroupProperties.interviewers !== unit.interviewers) {
+        if (!newNodesGroupProperties.interviewers.every((interviewer) => unit.interviewers.includes(interviewer))) {
             throw new FunctionError(400, 'Nodes group and unit owners are different');
         }
         newNodesGroup.interviewers = newNodesGroupProperties.interviewers;
     }
     if (newNodesGroupProperties.nodes) {
-        if (newNodesGroupProperties.nodes !== unit.nodes) {
+        if (!newNodesGroupProperties.nodes.every((node) => unit.nodes.includes(node))) {
             throw new FunctionError(400, 'Nodes group and unit owners are different');
         }
         newNodesGroup.nodes = newNodesGroupProperties.nodes;
@@ -25,4 +23,4 @@ const isEquals = (newNodesGroupProperties, unit, newNodesGroup) => {
     return newNodesGroup;
 };
 
-export default isEquals;
+export default validateAndUpdate;

@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["get"],
-      "route": "nodesgroups/{userId}"
+      "route": "nodesgroups/{id}"
     },
     {
       "type": "http",

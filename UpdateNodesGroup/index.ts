@@ -1,44 +1,43 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/utils/db';
-import { connectionFailedObj } from '../shared/utils/errorObjects';
-import reqValidation from './utils/idValidation';
+import reqIdValidation from '../shared/utils/reqValidation';
 import FunctionError from '../shared/utils/error';
 import NodesGroupModel from '../shared/models/nodesGroup.model';
 import { IUnit } from '../shared/interfaces/unit.interface';
 import UnitModel from '../shared/models/unit.model';
 import INodesGroup from '../shared/interfaces/nodesGroup.interface';
-import isEquals from './utils/isEquals.validation';
+import validateAndUpdate from './utils/nodesgroup.validation';
+
 const updateNodesGroup: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
-    const { error } = reqValidation.validate(req);
-    if (error) {
-        throw new FunctionError(400, 'Invalid id');
-    }
-    const { nodesGroupId } = context.bindingData;
-    const newNodesGroupProperties = req.body;
-    await getConnection()
-        .then(async () => {
-            const existNodesGroup: INodesGroup = await NodesGroupModel.findById(nodesGroupId)
-                .exec()
-                .catch((err) => {
-                    throw new FunctionError(404, 'Nodes group not found');
-                });
-            let newNodesGroup: INodesGroup = existNodesGroup;
-            const unit: IUnit = await UnitModel.findById(existNodesGroup.unit).catch((err) => {
-                throw new FunctionError(404, 'Unit not Found');
+    try {
+        const { error } = reqIdValidation.validate(req);
+        if (error) {
+            throw new FunctionError(400, 'Invalid id');
+        }
+        const nodesGroupId = context.bindingData.id;
+        const newNodesGroupProperties = req.body;
+        await getConnection();
+        const existNodesGroup: INodesGroup = await NodesGroupModel.findById(nodesGroupId)
+            .exec()
+            .catch((err) => {
+                throw new FunctionError(404, err.message);
             });
-            const nodesGroup = isEquals(newNodesGroupProperties, unit, newNodesGroup);
-            if (nodesGroup) {
-                const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, newNodesGroup).catch((err) => {
-                    throw new FunctionError(404, 'Nodes group not update');
-                });
-                context.res = { status: process.env.SUCCESS_CODE, body: updatedNodesGroup };
-            } else {
-                throw new FunctionError(400, 'Nodes group and unit owners are different');
-            }
-        })
-        .catch((error) => {
-            context.res = connectionFailedObj;
+        const newNodesGroup: INodesGroup = existNodesGroup;
+        const unit: IUnit = await UnitModel.findById(existNodesGroup.unit).catch((err) => {
+            throw new FunctionError(404, err.message);
         });
+        const nodesGroup = validateAndUpdate(newNodesGroupProperties, unit, newNodesGroup);
+        if (nodesGroup) {
+            const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, newNodesGroup).catch((err) => {
+                throw new FunctionError(404, err.message);
+            });
+            context.res = { status: process.env.SUCCESS_CODE, body: updatedNodesGroup };
+        } else {
+            throw new FunctionError(400, 'Nodes group and unit owners are different');
+        }
+    } catch (error) {
+        context.res = { status: error.code, body: error.message };
+    }
 };
 
 export default updateNodesGroup;

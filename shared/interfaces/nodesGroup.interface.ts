@@ -1,8 +1,8 @@
-import { ObjectId } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 export default interface INodesGroup {
-    owners: [ObjectId];
-    interviewers: [ObjectId];
-    nodes: [string];
-    unit: ObjectId;
+    owners: mongoose.Types.ObjectId[];
+    interviewers: mongoose.Types.ObjectId[];
+    nodes: string[];
+    unit: mongoose.Types.ObjectId;
 }
