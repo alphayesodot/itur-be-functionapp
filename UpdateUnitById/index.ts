@@ -19,7 +19,7 @@ const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest)
         const unit: IUnit = await UnitModel.findOneAndUpdate({ _id: unitId }, req.body, { new: true })
             .exec()
             .catch((e) => {
-                throw e;
+                throw e instanceof FunctionError ? e : new DuplicateUnitNameError();
             });
         if (!unit) throw new UnitNotFoundError();
         context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
