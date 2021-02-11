@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IEvent } from './event.interface';
+import { IEvent } from '../interfaces/event.interface';
 
 const EventsSchema = new mongoose.Schema({
     nodeId: String,
@@ -14,5 +14,5 @@ const EventsSchema = new mongoose.Schema({
     },
 });
 
-const EventModel = mongoose.model<IEvent & mongoose.Document>(process.env.EVENT_COLLECTION_NAME , EventsSchema);
+const EventModel = mongoose.model<IEvent & mongoose.Document>(process.env.EVENT_COLLECTION_NAME, EventsSchema);
 export default EventModel;

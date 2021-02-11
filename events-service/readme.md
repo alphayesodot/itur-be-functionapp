@@ -2,7 +2,7 @@
 
 ## Queue Storage Triggeer
 
-listen to events-queue
+listen to events-queue and create event object
 
 ## Event Interface
 

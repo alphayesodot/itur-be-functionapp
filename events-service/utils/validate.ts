@@ -6,7 +6,7 @@ const validEvent = Joi.object({
     malshabId: Joi.string().required(),
     time: Joi.date().required(),
     location: Joi.string().required(),
-    status: Joi.string().required().valid(Status.Status1, Status.Status2), // TODO: insert statuses
+    status: Joi.string().required(), // TODO: .valid(statuses)
     url: Joi.string(),
 });
 
