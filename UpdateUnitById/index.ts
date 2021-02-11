@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import { Types } from 'mongoose';
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { ValidationResult } from 'joi';
 import getConnection from '../shared/services/db';
@@ -15,8 +15,8 @@ const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest)
         const { error }: ValidationResult = updateUnitSchema.validate(req);
         if (error) throw new ValidationError(error.message);
 
-        const unitId: mongoose.Types.ObjectId = context.bindingData.id;
-        const unit: IUnit = await UnitModel.findOneAndUpdate({ _id: unitId }, req.body, { new: true })
+        const unitId: Types.ObjectId = context.bindingData.id;
+        const unit: IUnit = await UnitModel.findOneAndUpdate(unitId, req.body, { new: true })
             .exec()
             .catch((e) => {
                 throw e instanceof FunctionError ? e : new DuplicateUnitNameError();

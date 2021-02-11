@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import { Types } from 'mongoose';
 import { ValidationResult } from 'joi';
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/services/db';
@@ -15,7 +15,7 @@ const deleteUnitById: AzureFunction = async (context: Context, req: HttpRequest)
         const { error }: ValidationResult = deleteUnitByIdSchema.validate(req);
         if (error) throw new ValidationError(error.message);
 
-        const unitId: mongoose.Types.ObjectId = context.bindingData.id;
+        const unitId: Types.ObjectId = context.bindingData.id;
         const unit: IUnit = await UnitModel.findByIdAndRemove(unitId).exec();
         if (!unit) throw new UnitNotFoundError();
 
