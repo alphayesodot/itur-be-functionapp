@@ -6,7 +6,7 @@ const getResObject = (statusCode: number, body: object | string) => {
     return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body };
 };
 
-const httpTrigger: AzureFunction = async (context: Context): Promise<void> => {
+const getUnits: AzureFunction = async (context: Context): Promise<void> => {
     try {
         await getConnection();
         const units = await UnitModel.find().exec();
@@ -16,4 +16,4 @@ const httpTrigger: AzureFunction = async (context: Context): Promise<void> => {
     }
 };
 
-export default httpTrigger;
+export default getUnits;

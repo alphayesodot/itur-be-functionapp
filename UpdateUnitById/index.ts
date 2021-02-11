@@ -8,7 +8,7 @@ const getResObject = (statusCode: number, body: object | string) => {
     return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body };
 };
 
-const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
+const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
         await getConnection();
 
@@ -30,4 +30,4 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
     }
 };
 
-export default httpTrigger;
+export default updateUnitById;
