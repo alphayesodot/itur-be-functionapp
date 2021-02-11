@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-
 import { IUnit } from './unit.interface';
 
 const UnitSchema = new mongoose.Schema({
@@ -12,20 +11,46 @@ const UnitSchema = new mongoose.Schema({
     nodes: [String],
 });
 
+const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.ObjectId) => {
+    const units = await model.find({
+        $and: [
+            {
+                $or: [
+                    { owners: { $elemMatch: { $in: doc.owners } } },
+                    { interviewers: { $elemMatch: { $in: doc.interviewers } } },
+                    { nodes: { $elemMatch: { $in: doc.nodes } } },
+                ],
+            },
+            { _id: { $ne: unitId } },
+        ],
+    });
+    if (units.length > 0) {
+        throw new Error('Owners, interviewrs, and node must be unique');
+    }
+};
+
+UnitSchema.pre('findOneAndUpdate', async function (next: Function) {
+    try {
+        const { model } = this as any;
+        const doc = (this as any)._update.$set;
+        const unitId = (this as any)._conditions._id;
+        await validateUnit(model, doc, unitId);
+        next();
+    } catch {
+        next(new Error('Owners, interviewrs, and node must be unique'));
+    }
+});
+
 UnitSchema.post(
     'validate',
     async function (doc: IUnit, next: Function) {
-        const units = await this.default.find({
-            $or: [
-                { owners: { $elemMatch: { $in: doc.owners } } },
-                { interviewers: { $elemMatch: { $in: doc.interviewers } } },
-                { nodes: { $elemMatch: { $in: doc.nodes } } },
-            ],
-        });
-        if (units.length > 0) {
+        try {
+            const model = this.default;
+            await validateUnit(model, doc);
+            next();
+        } catch {
             next(new Error('Owners, interviewrs, and node must be unique'));
         }
-        next();
     }.bind(this),
 );
 

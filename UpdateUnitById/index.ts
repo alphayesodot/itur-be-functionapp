@@ -16,14 +16,14 @@ const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest)
         if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
 
         const unitId = context.bindingData.id;
-        const unit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body }, { upsert: true })
+        const unit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body })
             .exec()
-            .catch(() => {
-                throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), "Unit's name is already exist");
+            .catch((e) => {
+                throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), e.message);
             });
         if (!unit) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), `Not found Unit with id: ${unitId}`);
 
-        const updatedUnit = await UnitModel.find({ _id: unitId }).exec();
+        const updatedUnit = await UnitModel.findById(unitId).exec();
         context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), updatedUnit);
     } catch (err) {
         context.res = getResObject(err.code, err.message);

@@ -33,8 +33,9 @@ module.exports = {
                 json: 'never',
             },
         ],
-        'func-names': 0,
-        'import/no-unresolved': 0,
+        'no-underscore-dangle': 'off',
+        'func-names': 'off',
+        'import/no-unresolved': 'off',
         'no-unused-vars': 'off', // Checked by typescript
     },
 };
