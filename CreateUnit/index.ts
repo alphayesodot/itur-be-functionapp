@@ -1,7 +1,8 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { ValidationResult } from 'joi';
 import getConnection from '../shared/services/db';
-import { FunctionError, ValidationError, DuplicateUnitNameError, getResObject } from '../shared/services/error';
+import { FunctionError, ValidationError, DuplicateUnitNameError } from '../shared/services/error';
+import getResObject from '../shared/services/getResObject';
 import { createUnitSchema } from '../shared/unit/unit.schema';
 import { IUnit } from '../shared/unit/unit.interface';
 import UnitModel from '../shared/unit/unit.model';

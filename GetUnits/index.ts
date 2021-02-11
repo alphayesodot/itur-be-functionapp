@@ -1,6 +1,6 @@
 import { AzureFunction, Context } from '@azure/functions';
 import UnitModel from '../shared/unit/unit.model';
-import { getResObject } from '../shared/services/error';
+import getResObject from '../shared/services/getResObject';
 import getConnection from '../shared/services/db';
 import { IUnit } from '../shared/unit/unit.interface';
 
