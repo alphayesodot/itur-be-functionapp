@@ -12,7 +12,7 @@ const updateNodesGroup: AzureFunction = async (context: Context, req: HttpReques
     try {
         const { error } = reqIdValidation.validate(req);
         if (error) {
-            throw new FunctionError(400, 'Invalid id');
+            throw new FunctionError(400, error.message);
         }
         const nodesGroupId = context.bindingData.id;
         const newNodesGroupProperties = req.body;
@@ -27,14 +27,13 @@ const updateNodesGroup: AzureFunction = async (context: Context, req: HttpReques
             throw new FunctionError(404, err.message);
         });
         const nodesGroup = validateAndUpdate(newNodesGroupProperties, unit, newNodesGroup);
-        if (nodesGroup) {
-            const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, newNodesGroup).catch((err) => {
-                throw new FunctionError(404, err.message);
-            });
-            context.res = { status: process.env.SUCCESS_CODE, body: updatedNodesGroup };
-        } else {
+        if (!nodesGroup) {
             throw new FunctionError(400, 'Nodes group and unit owners are different');
         }
+        const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, newNodesGroup).catch((err) => {
+            throw new FunctionError(404, err.message);
+        });
+        context.res = { status: process.env.SUCCESS_CODE, body: updatedNodesGroup };
     } catch (error) {
         context.res = { status: error.code, body: error.message };
     }

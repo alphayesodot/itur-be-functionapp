@@ -3,7 +3,6 @@ import nodesGroupValidation from './utils/req.validation';
 import FunctionError from '../shared/utils/error';
 import NodesGroupModel from '../shared/models/nodesGroup.model';
 import getConnection from '../shared/utils/db';
-import { unitDifferentFromNodesGroupObj } from '../shared/utils/errorObjects';
 import UnitModel from '../shared/models/unit.model';
 import INodesGroup from '../shared/interfaces/nodesGroup.interface';
 import { IUnit } from '../shared/interfaces/unit.interface';
@@ -12,11 +11,11 @@ const createNodesGroup: AzureFunction = async (context: Context, req: HttpReques
     try {
         const nodesGroup = req.body;
         const { error } = nodesGroupValidation.validate(nodesGroup);
-        if (error) throw new FunctionError(400, 'Invalid node group');
+        if (error) throw new FunctionError(400, error.message);
 
         await getConnection();
         const unit: IUnit = await UnitModel.findById(nodesGroup.unit).catch((err) => {
-            throw new FunctionError(404, 'Unit not Found');
+            throw new FunctionError(404, err.message);
         });
         if (!unit) throw new FunctionError(404, 'Unit not Found');
         if (
@@ -29,7 +28,10 @@ const createNodesGroup: AzureFunction = async (context: Context, req: HttpReques
             });
             context.res = { status: process.env.SUCCESS_CODE, body: createdNodesGropp };
         } else {
-            context.res = unitDifferentFromNodesGroupObj;
+            context.res = {
+                status: process.env.VALIDATION_ERROR_CODE,
+                body: 'Unit and nodes group have different properties',
+            };
         }
     } catch (error) {
         context.res = { status: error.code, body: error.message };

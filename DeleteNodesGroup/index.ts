@@ -4,11 +4,11 @@ import reqIdValidation from '../shared/utils/reqValidation';
 import getConnection from '../shared/utils/db';
 import NodesGroupModel from '../shared/models/nodesGroup.model';
 
-const deleteNodesGroup: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+const deleteNodesGroup: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
         const { error } = reqIdValidation.validate(req);
         if (error) {
-            throw new FunctionError(400, 'Invalid id');
+            throw new FunctionError(400, error.message);
         }
         const { id } = context.bindingData;
         await getConnection();

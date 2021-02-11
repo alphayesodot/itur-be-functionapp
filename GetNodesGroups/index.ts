@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-expressions */
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/utils/db';
 import INodesGroup from '../shared/interfaces/nodesGroup.interface';
@@ -13,7 +11,7 @@ const getNodesGroups: AzureFunction = async (context: Context, req: HttpRequest)
                 .find()
                 .exec()
                 .catch((err) => {
-                    throw new FunctionError(404, 'No nodes groups');
+                    throw new FunctionError(404, err.message);
                 });
             context.res = { status: process.env.SUCCESS_CODE, body: nodesGroups };
         })

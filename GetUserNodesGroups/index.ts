@@ -10,7 +10,7 @@ const getUserNodesGroups: AzureFunction = async (context: Context, req: HttpRequ
         const userId = context.bindingData.id;
         const { error } = reqIdValidation.validate(req);
         if (error) {
-            throw new FunctionError(400, 'Invalid id');
+            throw new FunctionError(400, error.message);
         }
         await getConnection();
         const userNodesGroups: INodesGroup[] = await nodesGroupModel
