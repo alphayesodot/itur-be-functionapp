@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable import/no-unresolved */
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/utils/db';
 import nodesGroupModel from '../shared/models/nodesGroup.model';
