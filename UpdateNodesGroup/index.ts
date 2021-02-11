@@ -12,30 +12,31 @@ const updateNodesGroup: AzureFunction = async (context: Context, req: HttpReques
     try {
         const { error } = reqIdValidation.validate(req);
         if (error) {
-            throw new FunctionError(400, error.message);
+            throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
         }
         const nodesGroupId = context.bindingData.id;
         const newNodesGroupProperties = req.body;
         await getConnection();
-        const existNodesGroup: INodesGroup = await NodesGroupModel.findById(nodesGroupId)
-            .exec()
-            .catch((err) => {
-                throw new FunctionError(404, err.message);
-            });
+        const existNodesGroup: INodesGroup = await NodesGroupModel.findById(nodesGroupId).exec();
+        if (!existNodesGroup) {
+            throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Nodes group not found');
+        }
         const newNodesGroup: INodesGroup = existNodesGroup;
-        const unit: IUnit = await UnitModel.findById(existNodesGroup.unit).catch((err) => {
-            throw new FunctionError(404, err.message);
-        });
+        const unit: IUnit = await UnitModel.findById(existNodesGroup.unit);
+        if (!unit) {
+            throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Nodes group unit not found');
+        }
         const nodesGroup = validateAndUpdate(newNodesGroupProperties, unit, newNodesGroup);
         if (!nodesGroup) {
-            throw new FunctionError(400, 'Nodes group and unit owners are different');
+            throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Nodes group and unit owners are different');
         }
-        const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, newNodesGroup).catch((err) => {
-            throw new FunctionError(404, err.message);
-        });
+        const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, newNodesGroup);
+        if (!updatedNodesGroup) {
+            throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Nodes group not update');
+        }
         context.res = { status: process.env.SUCCESS_CODE, body: updatedNodesGroup };
     } catch (error) {
-        context.res = { status: error.code, body: error.message };
+        context.res = { status: process.env.SERVER_ERROR_CODE, body: error.message };
     }
 };
 

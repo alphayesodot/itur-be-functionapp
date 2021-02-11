@@ -10,18 +10,13 @@ const getUserNodesGroups: AzureFunction = async (context: Context, req: HttpRequ
         const userId = context.bindingData.id;
         const { error } = reqIdValidation.validate(req);
         if (error) {
-            throw new FunctionError(400, error.message);
+            throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
         }
         await getConnection();
-        const userNodesGroups: INodesGroup[] = await nodesGroupModel
-            .find({ owners: userId })
-            .exec()
-            .catch((err) => {
-                throw new FunctionError(404, err.message);
-            });
+        const userNodesGroups: INodesGroup[] = await nodesGroupModel.find({ owners: userId }).exec();
         context.res = { status: process.env.SUCCESS_CODE, body: userNodesGroups };
     } catch (error) {
-        context.res = { status: error.code, body: error.message };
+        context.res = { status: process.env.SERVER_ERROR_CODE, body: error.message };
     }
 };
 

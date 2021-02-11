@@ -5,19 +5,13 @@ import nodesGroupModel from '../shared/models/nodesGroup.model';
 import FunctionError from '../shared/utils/error';
 
 const getNodesGroups: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
-    await getConnection()
-        .then(async () => {
-            const nodesGroups: INodesGroup[] = await nodesGroupModel
-                .find()
-                .exec()
-                .catch((err) => {
-                    throw new FunctionError(404, err.message);
-                });
-            context.res = { status: process.env.SUCCESS_CODE, body: nodesGroups };
-        })
-        .catch((error) => {
-            context.res = { status: error.code, body: error.message };
-        });
+    try {
+        await getConnection();
+        const nodesGroups: INodesGroup[] = await nodesGroupModel.find().exec();
+        context.res = { status: process.env.SUCCESS_CODE, body: nodesGroups };
+    } catch (error) {
+        context.res = { status: process.env.SERVER_ERROR_CODE, body: error.message };
+    }
 };
 
 export default getNodesGroups;
