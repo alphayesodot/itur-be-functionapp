@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import { IUnit } from './unit.interface';
 import { UniqueUnitFieldsValidationError } from '../services/error';
 
-const UnitSchema = new mongoose.Schema({
+const UnitSchema: mongoose.Schema = new mongoose.Schema({
     name: {
         type: String,
         unique: true,
@@ -12,8 +12,8 @@ const UnitSchema = new mongoose.Schema({
     nodes: [String],
 });
 
-const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.ObjectId) => {
-    const units = await model.find({
+const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.ObjectId): Promise<void> => {
+    const units: IUnit[] = await model.find({
         $and: [
             {
                 $or: [
@@ -30,7 +30,7 @@ const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.Obje
     }
 };
 
-UnitSchema.pre('findOneAndUpdate', async function (next: Function) {
+UnitSchema.pre('findOneAndUpdate', async function (next: Function): Promise<void> {
     try {
         const { model } = this as any;
         const doc = (this as any)._update.$set;
@@ -44,7 +44,7 @@ UnitSchema.pre('findOneAndUpdate', async function (next: Function) {
 
 UnitSchema.post(
     'validate',
-    async function (doc: IUnit, next: Function) {
+    async function (doc: IUnit, next: Function): Promise<void> {
         try {
             const model = this.default;
             await validateUnit(model, doc);

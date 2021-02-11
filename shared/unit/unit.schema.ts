@@ -1,20 +1,20 @@
 import * as Joi from 'joi';
 
-const objectIdType = Joi.string().regex(/^[a-f\d]{24}$/i);
+const objectIdType: Joi.StringSchema = Joi.string().regex(/^[a-f\d]{24}$/i);
 
-export const getUnitByIdSchema = Joi.object({
+export const getUnitByIdSchema: Joi.ObjectSchema = Joi.object({
     params: {
         id: objectIdType,
     },
 }).unknown();
 
-export const deleteUnitByIdSchema = Joi.object({
+export const deleteUnitByIdSchema: Joi.ObjectSchema = Joi.object({
     params: {
         id: objectIdType,
     },
 }).unknown();
 
-export const createUnitSchema = Joi.object({
+export const createUnitSchema: Joi.ObjectSchema = Joi.object({
     body: {
         name: Joi.string().required(),
         nodes: Joi.array().items(Joi.string()).unique().required(),
@@ -23,7 +23,7 @@ export const createUnitSchema = Joi.object({
     },
 }).unknown();
 
-export const updateUnitSchema = Joi.object({
+export const updateUnitSchema: Joi.ObjectSchema = Joi.object({
     params: {
         id: objectIdType,
     },

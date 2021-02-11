@@ -12,8 +12,8 @@ export class FunctionError extends Error {
 }
 
 export class ValidationError extends FunctionError {
-    constructor() {
-        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), 'Invalid request');
+    constructor(message: string) {
+        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), message);
     }
 }
 
@@ -31,6 +31,6 @@ export class DuplicateUnitNameError extends FunctionError {
 
 export class UniqueUnitFieldsValidationError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), 'Owners, interviewrs, and node must be unique');
+        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), 'Owners, interviewers, and nodes must be unique');
     }
 }
