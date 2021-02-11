@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { IUnit } from './unit.interface';
+import { UniqueUnitFieldsValidationError } from '../services/error';
 
 const UnitSchema = new mongoose.Schema({
     name: {
@@ -25,7 +26,7 @@ const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.Obje
         ],
     });
     if (units.length > 0) {
-        throw new Error('Owners, interviewrs, and node must be unique');
+        throw new UniqueUnitFieldsValidationError();
     }
 };
 
@@ -36,8 +37,8 @@ UnitSchema.pre('findOneAndUpdate', async function (next: Function) {
         const unitId = (this as any)._conditions._id;
         await validateUnit(model, doc, unitId);
         next();
-    } catch {
-        next(new Error('Owners, interviewrs, and node must be unique'));
+    } catch (e) {
+        next(e);
     }
 });
 
@@ -48,8 +49,8 @@ UnitSchema.post(
             const model = this.default;
             await validateUnit(model, doc);
             next();
-        } catch {
-            next(new Error('Owners, interviewrs, and node must be unique'));
+        } catch (e) {
+            next(e);
         }
     }.bind(this),
 );

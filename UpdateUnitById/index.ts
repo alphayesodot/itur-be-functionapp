@@ -1,27 +1,23 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/services/db';
-import FunctionError from '../shared/services/error';
+import { FunctionError, ValidationError, DuplicateUnitNameError, UnitNotFoundError, getResObject } from '../shared/services/error';
 import { updateUnitSchema } from '../shared/unit/unit.schema';
 import UnitModel from '../shared/unit/unit.model';
-
-const getResObject = (statusCode: number, body: object | string) => {
-    return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body };
-};
 
 const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
         await getConnection();
 
         const { error } = updateUnitSchema.validate(req);
-        if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
+        if (error) throw new ValidationError();
 
         const unitId = context.bindingData.id;
         const unit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body })
             .exec()
             .catch((e) => {
-                throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), e.message);
+                throw e instanceof FunctionError ? e : new DuplicateUnitNameError();
             });
-        if (!unit) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), `Not found Unit with id: ${unitId}`);
+        if (!unit) throw new UnitNotFoundError();
 
         const updatedUnit = await UnitModel.findById(unitId).exec();
         context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), updatedUnit);

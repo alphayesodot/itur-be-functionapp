@@ -33,6 +33,7 @@ module.exports = {
                 json: 'never',
             },
         ],
+        'max-classes-per-file': 'off',
         'no-underscore-dangle': 'off',
         'func-names': 'off',
         'import/no-unresolved': 'off',
