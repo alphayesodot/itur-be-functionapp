@@ -16,9 +16,9 @@ const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.Obje
         $and: [
             {
                 $or: [
-                    { owners: { $elemMatch: { $in: doc.owners } } },
-                    { interviewers: { $elemMatch: { $in: doc.interviewers } } },
-                    { nodes: { $elemMatch: { $in: doc.nodes } } },
+                    { owners: { $elemMatch: { $in: doc.owners || [] } } },
+                    { interviewers: { $elemMatch: { $in: doc.interviewers || [] } } },
+                    { nodes: { $elemMatch: { $in: doc.nodes || [] } } },
                 ],
             },
             { _id: { $ne: unitId } },
