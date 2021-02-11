@@ -1,5 +1,5 @@
 class FunctionError extends Error {
-    public code;
+    public code: Number;
 
     constructor(code: number, message: string) {
         super(message);

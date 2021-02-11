@@ -5,8 +5,8 @@ import { getEventsSchema } from '../shared/event/event.schema';
 import FunctionError from '../shared/services/error';
 import EventModel from '../shared/event/event.model';
 
-const getResObject = (statusCode: Number | undefined, errorMessage: any) => {
-    return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body: errorMessage };
+const getResObject = (statusCode: Number | undefined, responseMessage: any) => {
+    return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body: responseMessage };
 };
 
 const getEvents: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
@@ -14,7 +14,9 @@ const getEvents: AzureFunction = async (context: Context, req: HttpRequest): Pro
         await getConnection();
 
         const { error } = getEventsSchema.validate(req);
-        if (error) throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
+        if (error) {
+            throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
+        }
 
         const { interviewerId, date } = req.body;
         const events = await EventModel.find({
@@ -25,6 +27,7 @@ const getEvents: AzureFunction = async (context: Context, req: HttpRequest): Pro
             // check that interviewersIds contain interviewerId
             interviewersIds: interviewerId,
         }).exec();
+
         context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), events);
     } catch (err) {
         context.res = getResObject(err.code, err.message);
