@@ -15,7 +15,7 @@ export class ValidationError extends FunctionError {
 
 export class UnitNotFoundError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.SERVER_ERROR_CODE, 10), 'Unit not found');
+        super(parseInt(process.env.NOT_FOUND_CODE, 10), 'Unit not found');
     }
 }
 

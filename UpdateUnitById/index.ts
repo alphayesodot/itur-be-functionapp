@@ -16,15 +16,13 @@ const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest)
         if (error) throw new ValidationError(error.message);
 
         const unitId: mongoose.Types.ObjectId = context.bindingData.id;
-        const unit: IUnit = await UnitModel.findOneAndUpdate({ _id: unitId }, { $set: req.body })
+        const unit: IUnit = await UnitModel.findOneAndUpdate({ _id: unitId }, req.body, { new: true })
             .exec()
             .catch((e) => {
-                throw e instanceof FunctionError ? e : new DuplicateUnitNameError();
+                throw e;
             });
         if (!unit) throw new UnitNotFoundError();
-
-        const updatedUnit: IUnit = await UnitModel.findById(unitId).exec();
-        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), updatedUnit);
+        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
     } catch (e) {
         context.res = getResObject(e.code, e.message);
     }
