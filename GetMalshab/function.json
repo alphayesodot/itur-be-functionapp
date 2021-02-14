@@ -15,5 +15,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/getMalshab/index.js"
+  "scriptFile": "../dist/GetMalshab/index.js"
 }

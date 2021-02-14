@@ -15,7 +15,7 @@ export const malshabFilter = (malshab: MalshabInterface & mongoose.Document<any>
     return undefined;
 };
 
-export const gePermissions = (role: number): string[] => {
+export const getPermissions = (role: number): string[] => {
     switch (role) {
         case Permissionroles.Interviewer: {
             return rolePermissions.interviewer;
