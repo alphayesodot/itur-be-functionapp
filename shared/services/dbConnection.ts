@@ -4,7 +4,7 @@ const initializeMongo = async () => {
     console.log('Connecting to Mongo...');
     await mongoose
         .connect(
-            `mongodb://'${process.env.COSMOSDB_HOST}:${process.env.COSMOSDB_PORT}/${process.env.COSMOSDB_DBNAME}?ssl=true&replicaSet=globaldb&retryWrites=false`,
+            `mongodb://${process.env.COSMOSDB_HOST}:${process.env.COSMOSDB_PORT}/${process.env.COSMOSDB_DBNAME}?ssl=true&replicaSet=globaldb&retryWrites=false`,
             {
                 user: process.env.COSMOSDB_USER,
                 pass: process.env.COSMOSDB_PASSWORD,
