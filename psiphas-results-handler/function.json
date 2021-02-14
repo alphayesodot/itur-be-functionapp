@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "psiphasResultsBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "psiphas/{name}.xml",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "malshabqueue",
+      "queueName": "malshab-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ],
+  "scriptFile": "../dist/psiphas-results-handler/index.js"
+}

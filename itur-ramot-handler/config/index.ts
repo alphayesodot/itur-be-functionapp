@@ -1,5 +1,5 @@
-import Malshab, { Address } from '../../shared/malshab/malshab.interface';
-import Event from '../../shared/event/event.interface';
+import Malshab, { Address } from '../../shared/interfaces/malshab.interface';
+import Event from '../../shared/interfaces/event.interface';
 import RamotUser from './ramotUser.interface';
 
 import { parseIntIfExists } from '../../shared/utils';
@@ -116,6 +116,7 @@ export const parseRamotToEvent = (ramotUser: RamotUser): Event => {
     return {
         nodeId: ramotUser.NODE_NAME_ID.toString(),
         malshabId: ramotUser.ID_NUMBER.toString(),
+        location: ramotUser.PLACE_NAME.toString(),
         time: new Date(ramotUser.EVENT_DATE),
     };
 };

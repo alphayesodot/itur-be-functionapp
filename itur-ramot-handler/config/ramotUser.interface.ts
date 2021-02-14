@@ -1,4 +1,4 @@
-import { Gender, MedicalProfile } from '../../shared/malshab/malshab.interface';
+import { Gender, MedicalProfile } from '../../shared/interfaces/malshab.interface';
 
 export default interface RamotUser {
     ID_NUMBER: number;

@@ -6,9 +6,9 @@ import blobXMLToJSON from './utils/index';
 import { getNestedPropertiesFromArray, cleanObj } from '../shared/utils/index';
 import { parseRamotToMalshab, parseRamotToEvent } from './config';
 
-import Malshab from '../shared/malshab/malshab.interface';
+import Malshab from '../shared/interfaces/malshab.interface';
 import RamotUser from './config/ramotUser.interface';
-import Event from '../shared/event/event.interface';
+import Event from '../shared/interfaces/event.interface';
 
 const blobTrigger: AzureFunction = async (context: Context, xmlBlob: any): Promise<void> => {
     const parsedXML: object[] = blobXMLToJSON(xmlBlob);

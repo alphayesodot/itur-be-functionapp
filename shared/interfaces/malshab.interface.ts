@@ -32,7 +32,7 @@ interface Language {
     languageLevelDesc: string;
 }
 
-interface Grade {
+export interface Grade {
     examId: number;
     examName: string;
     grade: number;
