@@ -6,8 +6,14 @@ const EventsSchema = new mongoose.Schema({
     malshabId: String,
     time: Date,
     location: String,
-    interviewersIds: [mongoose.Types.ObjectId],
-    status: String,
+    interviewersIds: {
+        type: [mongoose.Types.ObjectId],
+        required: false,
+    },
+    status: {
+        type: String,
+        required: false,
+    },
     url: {
         type: String,
         required: false,

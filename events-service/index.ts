@@ -5,10 +5,11 @@ import EventModel from '../shared/models/event.model';
 import NodesGroupModel from '../shared/models/nodesGroup.model';
 import ApplicationError from './utils/error';
 import validEvent from './utils/validate';
+import { IEvent } from '../shared/interfaces/event.interface';
 
-const createEvent: AzureFunction = async (context: Context, myQueueItem: string): Promise<void> => {
+const createEvent: AzureFunction = async (context: Context, myQueueItem: IEvent): Promise<void> => {
     try {
-        const queueObj = JSON.parse(myQueueItem);
+        const queueObj = myQueueItem;
         const { error } = validEvent.validate(queueObj);
         if (error) {
             throw new ApplicationError(error.message);
@@ -30,9 +31,8 @@ const createEvent: AzureFunction = async (context: Context, myQueueItem: string)
         }
 
         const eventObject = { ...queueObj, interviewersIds: [...interviewersList] };
-        await EventModel.create(eventObject).catch((err) => {
-            throw new ApplicationError(err.message);
-        });
+      const createdEvent = await EventModel.create(eventObject);
+      if(!createdEvent) throw new ApplicationError('Failed to create event');
     } catch (error) {
         throw new ApplicationError(error.message);
     }

@@ -7,6 +7,6 @@ export interface IEvent {
     time: Date;
     location: string;
     interviewersIds: Array<mongoose.Types.ObjectId>;
-    status: Status;
+    status?: Status;
     url?: string;
 }
