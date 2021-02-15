@@ -28,7 +28,6 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest): P
             status: error.code || config.error.serverErrorCode,
             body: error.message,
         };
-        return;
     }
 };
 
