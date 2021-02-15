@@ -5,8 +5,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": ["put"],
-      "route": "nodesgroups/{id}"
+      "methods": ["post"],
+      "route": "nodesgroups/{id}/owners"
     },
     {
       "type": "http",
@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/UpdateNodesGroup/index.js"
+  "scriptFile": "../dist/AddOwnerToNodesGroup/index.js"
 }
