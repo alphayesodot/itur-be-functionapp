@@ -1,0 +1,18 @@
+{
+  "bindings": [
+    {
+      "name": "removeNodeFromUnit",
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": ["delete"],
+      "route": "units/{id}/nodes"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
+  "scriptFile": "../dist/RemoveNodeFromUnit/index.js"
+}

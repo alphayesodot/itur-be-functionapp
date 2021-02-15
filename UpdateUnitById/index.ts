@@ -4,7 +4,7 @@ import { ValidationResult } from 'joi';
 import getConnection from '../shared/services/db';
 import { FunctionError, ValidationError, DuplicateUnitNameError, UnitNotFoundError } from '../shared/services/error';
 import getResObject from '../shared/services/getResObject';
-import { updateUnitSchema } from '../shared/unit/unit.schema';
+import updateUnitSchema from './joi';
 import UnitModel from '../shared/unit/unit.model';
 import { IUnit } from '../shared/unit/unit.interface';
 

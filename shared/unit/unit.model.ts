@@ -33,7 +33,7 @@ const validateUnit = async (model: any, doc: IUnit, unitId?: mongoose.Types.Obje
 UnitSchema.pre(['findOneAndUpdate', 'updateOne'], async function (next: Function): Promise<void> {
     try {
         const { model } = this as any;
-        const doc = (this as any)._update;
+        const doc = (this as any)._update.$addToSet || (this as any)._update;
         const unitId = (this as any)._conditions._id;
         await validateUnit(model, doc, unitId);
         next();

@@ -1,0 +1,18 @@
+{
+  "bindings": [
+    {
+      "name": "addNodeToUnit",
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": ["post"],
+      "route": "units/{id}/nodes"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
+  "scriptFile": "../dist/AddNodeToUnit/index.js"
+}

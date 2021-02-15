@@ -19,6 +19,18 @@ export class UnitNotFoundError extends FunctionError {
     }
 }
 
+export class NodeAlreadyExistInUnitError extends FunctionError {
+    constructor() {
+        super(parseInt(process.env.NOT_FOUND_CODE, 10), 'Node already exist');
+    }
+}
+
+export class NodeNotFoundError extends FunctionError {
+    constructor() {
+        super(parseInt(process.env.NOT_FOUND_CODE, 10), 'Node not found');
+    }
+}
+
 export class DuplicateUnitNameError extends FunctionError {
     constructor() {
         super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), 'Unit name already exist');

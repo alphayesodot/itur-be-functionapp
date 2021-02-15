@@ -3,7 +3,7 @@ import { ValidationResult } from 'joi';
 import getConnection from '../shared/services/db';
 import { FunctionError, ValidationError, DuplicateUnitNameError } from '../shared/services/error';
 import getResObject from '../shared/services/getResObject';
-import { createUnitSchema } from '../shared/unit/unit.schema';
+import createUnitSchema from './joi';
 import { IUnit } from '../shared/unit/unit.interface';
 import UnitModel from '../shared/unit/unit.model';
 

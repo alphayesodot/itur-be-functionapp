@@ -4,7 +4,7 @@ import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/services/db';
 import { ValidationError, UnitNotFoundError } from '../shared/services/error';
 import getResObject from '../shared/services/getResObject';
-import { deleteUnitByIdSchema } from '../shared/unit/unit.schema';
+import deleteUnitByIdSchema from './joi';
 import { IUnit } from '../shared/unit/unit.interface';
 import UnitModel from '../shared/unit/unit.model';
 
