@@ -1,0 +1,18 @@
+{
+  "bindings": [
+    {
+      "name": "removeInterviewerFromUnit",
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": ["delete"],
+      "route": "units/{id}/interviewers"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
+  "scriptFile": "../dist/RemoveInterviewerFromUnit/index.js"
+}

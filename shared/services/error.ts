@@ -31,6 +31,30 @@ export class NodeNotFoundError extends FunctionError {
     }
 }
 
+export class OwnerAlreadyExistInUnitError extends FunctionError {
+    constructor() {
+        super(404, 'Owner already exist');
+    }
+}
+
+export class OwnerNotFoundError extends FunctionError {
+    constructor() {
+        super(404, 'Owner not found');
+    }
+}
+
+export class InterviewerAlreadyExistInUnitError extends FunctionError {
+    constructor() {
+        super(404, 'Interviewer already exist');
+    }
+}
+
+export class InterviewerNotFoundError extends FunctionError {
+    constructor() {
+        super(404, 'Interviewer not found');
+    }
+}
+
 export class DuplicateUnitNameError extends FunctionError {
     constructor() {
         super(400, 'Unit name already exist');
