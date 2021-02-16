@@ -1,17 +1,17 @@
 import { AzureFunction, Context } from '@azure/functions';
 import { ValidationResult } from 'joi';
 import getConnection from '../shared/services/db';
-import updateNodesGroupsSchema from './joi';
+import updateNodesGroupsByUnitSchema from './joi';
 
-const UpdateNodesGroups: AzureFunction = async function (context: Context, queueMessage: any): Promise<void> {
+const UpdateNodesGroupsByUnit: AzureFunction = async function (context: Context, queueMessage: any): Promise<void> {
     try {
-        const { error }: ValidationResult = updateNodesGroupsSchema.validate(queueMessage);
+        const { error }: ValidationResult = updateNodesGroupsByUnitSchema.validate(queueMessage);
         if (error) {
             context.log.error(`The nodesGroupsUpdate message that arrived is invalid. ${context.invocationId}`);
             context.done();
         }
 
-        await getConnection();
+        const connection = await getConnection();
 
         context.log('Queue trigger function processed work item ', queueMessage);
 
@@ -21,4 +21,4 @@ const UpdateNodesGroups: AzureFunction = async function (context: Context, queue
     }
 };
 
-export default UpdateNodesGroups;
+export default UpdateNodesGroupsByUnit;
