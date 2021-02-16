@@ -1,7 +1,7 @@
+/* eslint-disable import/no-unresolved */
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import getConnection from '../shared/utils/db';
 import nodesGroupModel from '../shared/models/nodesGroup.model';
-import FunctionError from '../shared/utils/error';
 import INodesGroup from '../shared/interfaces/nodesGroup.interface';
 import reqIdValidation from '../shared/utils/reqValidation';
 
@@ -10,7 +10,8 @@ const getUserNodesGroups: AzureFunction = async (context: Context, req: HttpRequ
         const userId = context.bindingData.id;
         const { error } = reqIdValidation.validate(req);
         if (error) {
-            throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
+            context.res = { status: process.env.VALIDATION_ERROR_CODE, body: error.message };
+            context.done();
         }
         await getConnection();
         const userNodesGroups: INodesGroup[] = await nodesGroupModel.find({ owners: userId }).exec();

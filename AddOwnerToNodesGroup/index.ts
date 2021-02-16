@@ -1,35 +1,52 @@
 // eslint-disable-next-line import/no-unresolved
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import * as mongoose from 'mongoose';
-import FunctionError from '../shared/utils/error';
-import reqIdValidation from '../shared/utils/reqValidation';
+import reqValidation from '../shared/utils/owner.req.validation';
 import getConnection from '../shared/utils/db';
 import INodesGroup from '../shared/interfaces/nodesGroup.interface';
 import NodesGroupModel from '../shared/models/nodesGroup.model';
+import { IUnit } from '../shared/interfaces/unit.interface';
+import UnitModel from '../shared/models/unit.model';
 
 const addOwnersToNodesGroup: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
-        const { error } = reqIdValidation.validate(req);
+        const { error } = reqValidation.validate(req);
         if (error) {
-            throw new FunctionError(parseInt(process.env.VALIDATION_ERROR_CODE, 10), error.message);
+            context.res = { status: process.env.VALIDATION_ERROR_CODE, body: error.message };
+            context.done();
         }
 
         const nodesGroupId = context.bindingData.id;
         const ownerId: mongoose.Types.ObjectId = req.body.id;
 
-        if (!ownerId) throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Missing property: Interviewer id');
-
         await getConnection();
 
         const nodesGroup: INodesGroup = await NodesGroupModel.findById(nodesGroupId).exec();
         if (!nodesGroup) {
-            throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Nodes group not found');
+            context.res = { status: process.env.NOT_FOUND_CODE, body: 'Nodes group not found' };
+            context.done();
+        }
+
+        const unit: IUnit = await UnitModel.findById(nodesGroup.unit);
+        if (!unit) {
+            context.res = { status: process.env.NOT_FOUND_CODE, body: 'Nodes group unit not found' };
+            context.done();
+        }
+        if (!unit.owners.includes(ownerId)) {
+            context.res = { status: process.env.NOT_FOUND_CODE, body: 'Unit not include this owner id' };
+            context.done();
+        }
+
+        if (nodesGroup.owners.includes(ownerId)) {
+            context.res = { status: process.env.SERVER_ERROR_CODE, body: 'Owner already exist in nodes group' };
+            context.done();
         }
 
         const owners: mongoose.Types.ObjectId[] = [...nodesGroup.owners, ownerId];
-        const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, owners);
+        const updatedNodesGroup = await NodesGroupModel.findByIdAndUpdate(nodesGroupId, owners, { new: true });
         if (!updatedNodesGroup) {
-            throw new FunctionError(parseInt(process.env.NOT_FOUND_CODE, 10), 'Nodes group not update');
+            context.res = { status: process.env.NOT_FOUND_CODE, body: 'Nodes group not update' };
+            context.done();
         }
         context.res = { status: process.env.SUCCESS_CODE, body: updatedNodesGroup };
     } catch (error) {
