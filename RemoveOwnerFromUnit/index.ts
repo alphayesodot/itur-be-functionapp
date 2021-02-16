@@ -38,7 +38,7 @@ const removeOwnerFromUnit: AzureFunction = async (context: Context, req: HttpReq
         }
 
         const unit = await UnitModel.findById(unitId).exec();
-        context.bindings.UpdateNodeGroups = { unitId, fieldName: 'owners', removedItem: owner };
+        context.bindings.UpdateNodesGroups = { unitId, fieldName: 'owners', removedItem: owner };
         context.res = getResObject(200, unit);
     } catch (e) {
         context.res = getResObject(e.code, e.message);

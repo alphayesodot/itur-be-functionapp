@@ -38,7 +38,7 @@ const removeInterviewerFromUnit: AzureFunction = async (context: Context, req: H
         }
 
         const unit = await UnitModel.findById(unitId).exec();
-        context.bindings.UpdateNodeGroups = { unitId, fieldName: 'interviewers', removedItem: interviewer };
+        context.bindings.UpdateNodesGroups = { unitId, fieldName: 'interviewers', removedItem: interviewer };
         context.res = getResObject(200, unit);
     } catch (e) {
         context.res = getResObject(e.code, e.message);

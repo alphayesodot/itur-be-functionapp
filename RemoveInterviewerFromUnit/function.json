@@ -16,8 +16,8 @@
     {
       "type": "queue",
       "direction": "out",
-      "name": "UpdateNodeGroups",
-      "queueName": "node-groups-queue",
+      "name": "UpdateNodesGroups",
+      "queueName": "nodes-groups-queue",
       "connection": "AzureWebJobsStorage"
     }
   ],
