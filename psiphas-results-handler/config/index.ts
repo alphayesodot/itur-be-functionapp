@@ -21,3 +21,7 @@ export const resultObjToMalshab = (resultObj: any): Malshab => {
         grades,
     };
 };
+
+export const resultObjToPDF = (obj: any) => {
+    return { filename: `${obj.CANDIDATE_ID}-psiphas.pdf`, content: obj.PDF };
+};

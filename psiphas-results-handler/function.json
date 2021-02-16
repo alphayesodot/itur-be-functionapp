@@ -10,16 +10,9 @@
     {
       "type": "queue",
       "direction": "out",
-      "name": "malshabqueue",
-      "queueName": "malshab-queue",
+      "name": "fileuploadqueue",
+      "queueName": "%FILE_UPLOAD_QUEUE_NAME%",
       "connection": "AzureWebJobsStorage"
-    },
-    {
-      "name": "PdfBlob",
-      "type": "blob",
-      "path": "%PDF_BLOB_NAME%/psiphas-{DateTime}.pdf",
-      "connection": "AzureWebJobsStorage",
-      "direction": "out"
     }
   ],
   "scriptFile": "../dist/psiphas-results-handler/index.js"
