@@ -3,9 +3,12 @@ import Event from '../../shared/event/event.interface';
 import RamotUser from './ramotUser.interface';
 
 import { parseIntIfExists } from '../../shared/utils';
-import { parsePhoneNumber } from '../utils/index';
 
 export const ramotXmlKeySet = ['itu:ITURTORAMOTDATA', 'PSIFAS_EVENTS', 'PSIFASRECORD'];
+
+const parsePhoneNumber = (str: string | number): string => {
+    return str.toString().startsWith('0') ? str.toString() : `0${str}`;
+};
 
 export const parseRamotToMalshab = (ramotUser: RamotUser): Malshab => {
     return {

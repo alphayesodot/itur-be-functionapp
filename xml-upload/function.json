@@ -17,21 +17,21 @@
     {
       "name": "HamanBlob",
       "type": "blob",
-      "path": "%HAMAN_BLOB_NAME%/Haman-{DateTime}.xml",
+      "path": "%HAMAN_BLOB_NAME%/{DateTime}-{filename}",
       "connection": "AzureWebJobsStorage",
       "direction": "out"
     },
     {
       "name": "IturRamotBlob",
       "type": "blob",
-      "path": "%ITUR_RAMOT_BLOB_NAME%/IturRamot-{DateTime}.xml",
+      "path": "%ITUR_RAMOT_BLOB_NAME%/{DateTime}-{filename}",
       "connection": "AzureWebJobsStorage",
       "direction": "out"
     },
     {
       "name": "PsiphasBlob",
       "type": "blob",
-      "path": "%PSIPHAS_BLOB_NAME%/Psiphas-{DateTime}.xml",
+      "path": "%PSIPHAS_BLOB_NAME%/{DateTime}-{filename}",
       "connection": "AzureWebJobsStorage",
       "direction": "out"
     }

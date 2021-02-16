@@ -44,3 +44,7 @@ const cleanArr = (arr: any[]) => {
         return Object.keys(cleanObj(obj)).length !== 0 && obj != null;
     });
 };
+
+export const bufferToString = (buffer: ArrayBuffer): string => {
+    return Buffer.from(buffer).toString();
+};
