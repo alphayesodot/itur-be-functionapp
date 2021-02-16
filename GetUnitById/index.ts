@@ -13,13 +13,21 @@ const getUnitById: AzureFunction = async (context: Context, req: HttpRequest): P
         await getConnection();
 
         const { error }: ValidationResult = getUnitByIdSchema.validate(req);
-        if (error) throw new ValidationError(error.message);
+        if (error) {
+            const resError = new ValidationError(error.message);
+            context.res = getResObject(resError.code, resError.message);
+            context.done();
+        }
 
         const unitId: Types.ObjectId = context.bindingData.id;
         const unit: IUnit = await UnitModel.findById(unitId).exec();
-        if (!unit) throw new UnitNotFoundError();
+        if (!unit) {
+            const resError = new UnitNotFoundError();
+            context.res = getResObject(resError.code, resError.message);
+            context.done();
+        }
 
-        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
+        context.res = getResObject(200, unit);
     } catch (e) {
         context.res = getResObject(e.code, e.message);
     }

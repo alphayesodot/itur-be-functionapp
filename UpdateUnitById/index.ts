@@ -13,18 +13,30 @@ const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest)
         await getConnection();
 
         const { error }: ValidationResult = updateUnitSchema.validate(req);
-        if (error) throw new ValidationError(error.message);
+        if (error) {
+            const resError = new ValidationError(error.message);
+            context.res = getResObject(resError.code, resError.message);
+            context.done();
+        }
 
         const unitId: Types.ObjectId = context.bindingData.id;
-        const unit: IUnit = await UnitModel.findOneAndUpdate(unitId, req.body, { new: true })
+        const unit: IUnit | void = await UnitModel.findOneAndUpdate(unitId, req.body, { new: true })
             .exec()
             .catch((e) => {
-                throw e instanceof FunctionError ? e : new DuplicateUnitNameError();
+                const resError = e instanceof FunctionError ? e : new DuplicateUnitNameError();
+                context.res = getResObject(resError.code, resError.message);
+                context.done();
             });
-        if (!unit) throw new UnitNotFoundError();
-        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
+
+        if (!unit) {
+            const resError = new UnitNotFoundError();
+            context.res = getResObject(resError.code, resError.message);
+            context.done();
+        }
+
+        context.res = getResObject(200, unit as IUnit);
     } catch (e) {
-        context.res = getResObject(e.code, e.message);
+        context.res = getResObject(e.status, e.message);
     }
 };
 

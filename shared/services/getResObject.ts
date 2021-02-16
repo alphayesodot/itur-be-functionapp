@@ -1,5 +1,5 @@
 const getResObject = (statusCode: number, body: object | string) => {
-    return { status: statusCode ?? process.env.SERVER_ERROR_CODE, body };
+    return { status: statusCode ?? 500, body };
 };
 
 export default getResObject;

@@ -12,12 +12,19 @@ const createUnit: AzureFunction = async (context: Context, req: HttpRequest): Pr
         await getConnection();
 
         const { error }: ValidationResult = createUnitSchema.validate(req);
-        if (error) throw new ValidationError(error.message);
+        if (error) {
+            const resError = new ValidationError(error.message);
+            context.res = getResObject(resError.code, resError.message);
+            context.done();
+        }
 
-        const unit: IUnit = await UnitModel.create(req.body).catch((e) => {
-            throw e instanceof FunctionError ? e : new DuplicateUnitNameError();
+        const unit: IUnit | void = await UnitModel.create(req.body).catch((e) => {
+            const resError = e instanceof FunctionError ? e : new DuplicateUnitNameError();
+            context.res = getResObject(resError.code, resError.message);
+            context.done();
         });
-        context.res = getResObject(parseInt(process.env.SUCCESS_CODE, 10), unit);
+
+        context.res = getResObject(200, unit as IUnit);
     } catch (e) {
         context.res = getResObject(e.code, e.message);
     }

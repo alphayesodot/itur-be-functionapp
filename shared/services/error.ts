@@ -9,36 +9,36 @@ export class FunctionError extends Error {
 
 export class ValidationError extends FunctionError {
     constructor(message: string) {
-        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), message);
+        super(400, message);
     }
 }
 
 export class UnitNotFoundError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.NOT_FOUND_CODE, 10), 'Unit not found');
+        super(404, 'Unit not found');
     }
 }
 
 export class NodeAlreadyExistInUnitError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.NOT_FOUND_CODE, 10), 'Node already exist');
+        super(404, 'Node already exist');
     }
 }
 
 export class NodeNotFoundError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.NOT_FOUND_CODE, 10), 'Node not found');
+        super(404, 'Node not found');
     }
 }
 
 export class DuplicateUnitNameError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), 'Unit name already exist');
+        super(400, 'Unit name already exist');
     }
 }
 
 export class UniqueUnitFieldsValidationError extends FunctionError {
     constructor() {
-        super(parseInt(process.env.VALIDATION_ERROR_CODE, 10), 'Owners, interviewers, and nodes must be unique');
+        super(400, 'Owners, interviewers, and nodes must be unique');
     }
 }
