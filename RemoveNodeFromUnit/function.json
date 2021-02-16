@@ -12,6 +12,13 @@
       "type": "http",
       "direction": "out",
       "name": "res"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "UpdateNodeGroups",
+      "queueName": "node-groups-queue",
+      "connection": "AzureWebJobsStorage"
     }
   ],
   "scriptFile": "../dist/RemoveNodeFromUnit/index.js"

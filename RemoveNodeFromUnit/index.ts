@@ -38,6 +38,7 @@ const removeNodeFromUnit: AzureFunction = async (context: Context, req: HttpRequ
         }
 
         const unit = await UnitModel.findById(unitId).exec();
+        context.bindings.UpdateNodeGroups = { unitId, fieldName: 'nodes', removedItem: node };
         context.res = getResObject(200, unit);
     } catch (e) {
         context.res = getResObject(e.code, e.message);

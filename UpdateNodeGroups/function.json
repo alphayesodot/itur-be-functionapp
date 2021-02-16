@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "UpdateNodeGroups",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "node-groups-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ],
+  "scriptFile": "../dist/UpdateNodeGroups/index.js"
+}
