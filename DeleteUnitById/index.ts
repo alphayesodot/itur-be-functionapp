@@ -10,14 +10,14 @@ import UnitModel from '../shared/unit/unit.model';
 
 const deleteUnitById: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
-        await getConnection();
-
         const { error }: ValidationResult = deleteUnitByIdSchema.validate(req);
         if (error) {
             const resError = new ValidationError(error.message);
             context.res = getResObject(resError.code, resError.message);
             context.done();
         }
+
+        await getConnection();
 
         const unitId: Types.ObjectId = context.bindingData.id;
         const unit: IUnit = await UnitModel.findByIdAndRemove(unitId).exec();

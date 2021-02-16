@@ -10,14 +10,14 @@ import { IUnit } from '../shared/unit/unit.interface';
 
 const updateUnitById: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
-        await getConnection();
-
         const { error }: ValidationResult = updateUnitSchema.validate(req);
         if (error) {
             const resError = new ValidationError(error.message);
             context.res = getResObject(resError.code, resError.message);
             context.done();
         }
+
+        await getConnection();
 
         const unitId: Types.ObjectId = context.bindingData.id;
         const unit: IUnit | void = await UnitModel.findOneAndUpdate(unitId, req.body, { new: true })

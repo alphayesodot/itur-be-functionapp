@@ -9,14 +9,14 @@ import UnitModel from '../shared/unit/unit.model';
 
 const createUnit: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
-        await getConnection();
-
         const { error }: ValidationResult = createUnitSchema.validate(req);
         if (error) {
             const resError = new ValidationError(error.message);
             context.res = getResObject(resError.code, resError.message);
             context.done();
         }
+
+        await getConnection();
 
         const unit: IUnit | void = await UnitModel.create(req.body).catch((e) => {
             const resError = e instanceof FunctionError ? e : new DuplicateUnitNameError();

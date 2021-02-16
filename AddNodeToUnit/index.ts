@@ -9,14 +9,14 @@ import UnitModel from '../shared/unit/unit.model';
 
 const addNodeToUnit: AzureFunction = async (context: Context, req: HttpRequest): Promise<void> => {
     try {
-        await getConnection();
-
         const { error }: ValidationResult = addNodeToUnitSchema.validate(req);
         if (error) {
             const resError = new ValidationError(error.message);
             context.res = getResObject(resError.code, resError.message);
             context.done();
         }
+
+        await getConnection();
 
         const { node } = req.body;
         const unitId: Types.ObjectId = context.bindingData.id;
