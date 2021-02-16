@@ -16,6 +16,8 @@ const UpdateNodesGroupsByUnit: AzureFunction = async function (context: Context,
         context.log('Queue trigger function processed work item ', queueMessage);
 
         const { unitId, fieldName, removedItem } = queueMessage;
+
+        await connection.collection(process.env.NODES_GROUP_COLLECTION_NAME).updateMany({ unit: unitId }, { $pull: { [fieldName]: removedItem } });
     } catch (e) {
         context.log.error(e + context.invocationId);
     }
