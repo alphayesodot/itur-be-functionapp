@@ -2,6 +2,7 @@ import { AzureFunction, Context } from '@azure/functions';
 import { ValidationResult } from 'joi';
 import getConnection from '../shared/services/db';
 import updateNodesGroupsByUnitSchema from './joi';
+import NodesGroupModel from '../shared/nodesGroup/nodesGroup.model';
 
 const UpdateNodesGroupsByUnit: AzureFunction = async function (context: Context, queueMessage: any): Promise<void> {
     try {
@@ -10,14 +11,12 @@ const UpdateNodesGroupsByUnit: AzureFunction = async function (context: Context,
             context.log.error(`The nodesGroupsUpdate message that arrived is invalid. ${context.invocationId}`);
             context.done();
         }
-
-        const connection = await getConnection();
+        await getConnection();
 
         context.log('Queue trigger function processed work item ', queueMessage);
 
         const { unitId, fieldName, removedItem } = queueMessage;
-
-        await connection.collection(process.env.NODES_GROUP_COLLECTION_NAME).updateMany({ unit: unitId }, { $pull: { [fieldName]: removedItem } });
+        await NodesGroupModel.updateMany({ unit: unitId }, { $pull: { [fieldName]: removedItem } });
     } catch (e) {
         context.log.error(e + context.invocationId);
     }
