@@ -1,6 +1,6 @@
 import * as env from 'env-var';
 
-import findObjBySimilarKeyValue from './utils/find'
+import findObjBySimilarKeyValue from './utils/find';
 import * as functionConf from './function.json';
 
 export const error = {

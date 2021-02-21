@@ -1,4 +1,10 @@
-import Malshab from '../../shared/interfaces/malshab.interface';
+import * as env from 'env-var';
+import Malshab from '../shared/interfaces/malshab.interface';
+import File from '../shared/interfaces/file.interface';
+
+export const error = {
+    serverErrorCode: env.get('SERVER_ERROR_CODE').asInt() || 500,
+};
 
 export const psiphasXmlKeySet = ['PSIPHAS_RESULTS', 'RECORD'];
 
@@ -22,6 +28,6 @@ export const resultObjToMalshab = (resultObj: any): Malshab => {
     };
 };
 
-export const resultObjToPDF = (obj: any) => {
-    return { filename: `${obj.CANDIDATE_ID}-psiphas.pdf`, content: obj.PDF };
+export const resultObjToPDF = (obj: any): File => {
+    return { filename: `${obj.CANDIDATE_ID}-psiphas.pdf`, base64content: obj.PDF };
 };

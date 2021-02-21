@@ -1,4 +1,4 @@
 export default interface File {
     filename: string;
-    content: string;
+    base64content: string;
 }

@@ -10,7 +10,7 @@ import Malshab from '../shared/interfaces/malshab.interface';
 import RamotUser from './config/ramotUser.interface';
 import Event from '../shared/interfaces/event.interface';
 
-const blobTrigger: AzureFunction = async (context: Context, xmlBlob: any): Promise<void> => {
+const IturRamotHandler: AzureFunction = async (context: Context, xmlBlob: any): Promise<void> => {
     const parsedXML: object[] = blobXMLToJSON(xmlBlob);
     const ramotUsers: RamotUser[] = getNestedPropertiesFromArray(parsedXML, config.ramotXmlKeySet);
 
@@ -21,4 +21,4 @@ const blobTrigger: AzureFunction = async (context: Context, xmlBlob: any): Promi
     context.bindings.eventsqueue = events;
 };
 
-export default blobTrigger;
+export default IturRamotHandler;

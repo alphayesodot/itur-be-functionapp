@@ -10,8 +10,8 @@
     {
       "type": "queue",
       "direction": "out",
-      "name": "fileuploadqueue",
-      "queueName": "%FILE_UPLOAD_QUEUE_NAME%",
+      "name": "malshabqueue",
+      "queueName": "%MALSHAB_QUEUE_NAME%",
       "connection": "AzureWebJobsStorage"
     }
   ],
