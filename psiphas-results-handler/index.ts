@@ -12,13 +12,16 @@ const ResultsHandler: AzureFunction = async (context: Context, psiphasResultsBlo
     try {
         const parsedXML: Array<any> = getNestedPropertiesFromArray(blobXMLToJSON(psiphasResultsBlob), config.psiphasXmlKeySet);
 
-        const grades: Malshab[] = parsedXML.map((resultObj) => config.resultObjToMalshab(resultObj));
-        context.bindings.malshabqueue = grades;
-
         const documents: File[] = parsedXML
             .filter((resultObj) => resultObj.CANDIDATE_ID && resultObj.PDF)
             .map((resultObj) => config.resultObjToPDF(resultObj));
         documents.forEach((file: File) => uploadFileToBlob(process.env.PDF_BLOB_NAME, file));
+
+        const grades: Malshab[] = parsedXML.map((resultObj) => config.resultObjToMalshab(resultObj));
+        const malshabDocumentsLinks = parsedXML
+            .filter((resultObj) => resultObj.CANDIDATE_ID && resultObj.PDF)
+            .map((resultObj) => config.resultObjToMalshabPdfInfo(resultObj));
+        context.bindings.malshabqueue = grades.concat(malshabDocumentsLinks);
     } catch (error) {
         context.res = {
             status: error.code || config.error.serverErrorCode,
