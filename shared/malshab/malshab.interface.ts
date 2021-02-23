@@ -55,7 +55,7 @@ export default interface Malshab {
     aptitudeTest?: AptitudeTest;
     statusId?: number;
     statusName?: string;
-    address?: Address[];
+    addresses?: Address[];
     homePhoneNumber?: string;
     personalPhoneNumber?: string;
     birthCountry?: string;
