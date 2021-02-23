@@ -6,6 +6,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "prestart": "npm run build",
+    "docs":"typedoc",
     "start": "func start",
     "test": "echo \"No tests yet...\"",
     "lint": "eslint . --ext .ts",
@@ -29,6 +30,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
+    "typedoc": "^0.20.27",
     "typescript": "^3.3.3"
   }
 }

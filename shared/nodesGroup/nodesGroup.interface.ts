@@ -1,6 +1,8 @@
 export default interface NodesGroup {
     id: string;
+    name: string;
     unitId: string;
-    owners: string[];
-    nodes: string[];
+    interviewersIds: string[];
+    ownerIds: string[];
+    nodeIds: string[];
 }

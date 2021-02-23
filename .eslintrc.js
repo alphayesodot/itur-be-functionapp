@@ -36,5 +36,6 @@ module.exports = {
         'no-unused-vars': 'off', // Checked by typescript
         'no-shadow': 'off', // Used to resolve Enum bug
         '@typescript-eslint/no-shadow': ['error'],
+        'max-classes-per-file': 'off',
     },
 };

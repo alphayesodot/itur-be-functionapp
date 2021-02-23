@@ -1,20 +1,56 @@
-import * as mongoose from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-import { IEvent, Status } from './event.interface';
+import { Event, EventStatus } from './event.interface';
 
-const EventSchema = new mongoose.Schema({
-    nodeId: String,
-    malshabId: String,
-    time: Date,
-    location: String,
-    interviewersIds: [mongoose.Types.ObjectId],
-    status: {
+import config from '../../config';
+
+const { collectionNames } = config.mongo;
+
+const eventSchema = new Schema({
+    nodeId: {
+        type: Schema.Types.ObjectId,
+        ref: collectionNames.node,
+    },
+    malshabShort: {
+        id: {
+            type: Schema.Types.ObjectId,
+            ref: collectionNames.malshab,
+            required: true,
+        },
+        firstName: {
+            type: String,
+            required: true,
+        },
+        lastName: {
+            type: String,
+            required: true,
+        },
+    },
+    time: {
+        type: Date,
+        required: true,
+    },
+    location: {
         type: String,
-        enum: Status,
+        required: true,
+    },
+    interviewersIds: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: collectionNames.user,
+        },
+    ],
+    status: {
+        type: EventStatus,
+        default: EventStatus.Created,
     },
     url: String,
+    results: [
+        {
+            notes: String,
+            filesUrls: [String],
+        },
+    ],
 });
 
-const EventModel = mongoose.model<IEvent & mongoose.Document>(process.env.EVENT_COLLECTION_NAME, EventSchema);
-
-export default EventModel;
+export default model<Event & Document>(collectionNames.event, eventSchema);

@@ -1,4 +1,3 @@
-export type Gender = 1 | 2;
 export type MedicalProfile = 21 | 24 | 25 | 45 | 64 | 72 | 82 | 97;
 
 interface AptitudeTest {
@@ -44,7 +43,7 @@ export default interface Malshab {
     firstName?: string;
     lastName?: string;
     email?: string;
-    gender?: Gender;
+    gender?: number;
     birthDate?: Date;
     medicalProfile?: MedicalProfile;
     kaba?: number;
