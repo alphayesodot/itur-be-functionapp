@@ -1,8 +1,12 @@
+import * as env from 'env-var';
 import Malshab, { Address } from '../../shared/interfaces/malshab.interface';
 import Event from '../../shared/interfaces/event.interface';
 import RamotUser from './ramotUser.interface';
-
 import { parseIntIfExists } from '../../shared/utils';
+
+export const error = {
+    serverErrorCode: env.get('SERVER_ERROR_CODE').asInt() || 500,
+};
 
 export const ramotXmlKeySet = ['itu:ITURTORAMOTDATA', 'PSIFAS_EVENTS', 'PSIFASRECORD'];
 

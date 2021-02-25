@@ -12,15 +12,13 @@ const ResultsHandler: AzureFunction = async (context: Context, psiphasResultsBlo
     try {
         const parsedXML: Array<any> = getNestedPropertiesFromArray(blobXMLToJSON(psiphasResultsBlob), config.psiphasXmlKeySet);
 
-        const documents: File[] = parsedXML
-            .filter((resultObj) => resultObj.CANDIDATE_ID && resultObj.PDF)
-            .map((resultObj) => config.resultObjToPDF(resultObj));
-        documents.forEach((file: File) => uploadFileToBlob(process.env.PDF_BLOB_NAME, file));
-
         const grades: Malshab[] = parsedXML.map((resultObj) => config.resultObjToMalshab(resultObj));
-        const malshabDocumentsLinks = parsedXML
-            .filter((resultObj) => resultObj.CANDIDATE_ID && resultObj.PDF)
-            .map((resultObj) => config.resultObjToMalshabPdfInfo(resultObj));
+
+        const documentedCandidates: Array<any> = parsedXML.filter((resultObj) => resultObj.CANDIDATE_ID && resultObj.PDF);
+        const documents: File[] = documentedCandidates.map((resultObj) => config.resultObjToPDF(resultObj));
+        const malshabDocumentsLinks: Malshab[] = documentedCandidates.map((resultObj) => config.resultObjToMalshabPdfInfo(resultObj));
+
+        documents.forEach((file: File) => uploadFileToBlob(process.env.PDF_BLOB_NAME, file));
         context.bindings.malshabqueue = grades.concat(malshabDocumentsLinks);
     } catch (error) {
         context.res = {
