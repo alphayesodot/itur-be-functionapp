@@ -1,8 +1,12 @@
-import Malshab, { Address } from '../../shared/malshab/malshab.interface';
-import Event from '../../shared/event/event.interface';
+import * as env from 'env-var';
+import Malshab, { Address } from '../../shared/interfaces/malshab.interface';
+import Event from '../../shared/interfaces/event.interface';
 import RamotUser from './ramotUser.interface';
-
 import { parseIntIfExists } from '../../shared/utils';
+
+export const error = {
+    serverErrorCode: env.get('SERVER_ERROR_CODE').asInt() || 500,
+};
 
 export const ramotXmlKeySet = ['itu:ITURTORAMOTDATA', 'PSIFAS_EVENTS', 'PSIFASRECORD'];
 
@@ -119,6 +123,7 @@ export const parseRamotToEvent = (ramotUser: RamotUser): Event => {
     return {
         nodeId: ramotUser.NODE_NAME_ID.toString(),
         malshabId: ramotUser.ID_NUMBER.toString(),
+        location: ramotUser.PLACE_NAME.toString(),
         time: new Date(ramotUser.EVENT_DATE),
     };
 };

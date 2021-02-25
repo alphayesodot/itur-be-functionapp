@@ -10,7 +10,7 @@ const XmlUpload: AzureFunction = async (context: Context, req: HttpRequest): Pro
     try {
         if (!req.body) throw new HttpFunctionAppError(400, 'Missing request body');
         if (!req.query?.filename) throw new HttpFunctionAppError(400, 'Filename is not defined');
-        if (!req.query?.filename.endsWith('.xml')) throw new HttpFunctionAppError(400, 'This API only supports .xml file type upload');
+        if (!req.query?.filename.endsWith('.xml')) throw new HttpFunctionAppError(400, 'This API Endpoint only supports .xml file type upload');
 
         const parts = multipart.Parse(Buffer.from(req.body), multipart.getBoundary(req.headers['content-type']));
 
